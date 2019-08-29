@@ -6,5 +6,6 @@ password:caojunyi
 
 mysql数据库
 version：5.7
+port：3306
 用户：root
 密码：942558046
