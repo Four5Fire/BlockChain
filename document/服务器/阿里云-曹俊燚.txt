@@ -3,3 +3,8 @@ ssh-port:22
 username:root
 password:caojunyi
 域名：playcall.cn
+
+mysql数据库
+version：5.7
+用户：root
+密码：942558046
