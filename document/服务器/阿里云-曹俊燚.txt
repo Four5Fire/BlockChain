@@ -1,0 +1,5 @@
+ip:39.106.190.132
+ssh-port:22
+username:root
+password:caojunyi
+域名：playcall.cn
