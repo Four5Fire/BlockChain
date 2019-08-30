@@ -43,9 +43,6 @@ public class SqlSessionConfig implements TransactionManagementConfigurer{
         return new DataSourceTransactionManager(dataSource);
     }
 
-    /**
-     * @see
-     */
     @Override
     public PlatformTransactionManager annotationDrivenTransactionManager(){
         return txManager();

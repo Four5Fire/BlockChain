@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="600 seconds" debug="false">
+    <!--控制台输出 -->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread]%logger{56}.%method:%L -%msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- web appender -->
+    <appender name="file.web" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>/data/logs/blockchain/share_file.log</File>
+        <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>/data/logs/blockchain/archive/share_file_all_%d{yyyy-MM-dd}.%i.log.zip
+            </FileNamePattern>
+            <!-- 文件输出日志 (文件大小策略进行文件输出，超过指定大小对文件备份) -->
+            <maxFileSize>100MB</maxFileSize>
+            <!-- 超过指定时间粒度进行清除 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <!-- 日志输出的文件的格式 -->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread]%logger{56}.%method:%L -%msg%n</pattern>
+        </layout>
+    </appender>
+
+
+    <!-- error.web appender -->
+    <appender name="file.error.web"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>/data/logs/blockchain/share_file_err.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>/data/logs/blockchain/archive/share_file_err_%d{yyyy-MM-dd}.%i.log.zip
+            </FileNamePattern>
+            <!-- 文件输出日志 (文件大小策略进行文件输出，超过指定大小对文件备份) -->
+            <maxFileSize>100MB</maxFileSize>
+            <!-- 超过指定时间粒度进行清除 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{56}.%method:%L - %msg%n</pattern>
+        </layout>
+        <!-- 下面为配置只输出error级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+    <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+    <!-- 添加附加的appender,最多只能添加一个 -->
+    <appender name="file.async.web" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>256</queueSize>
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="file.web"/>
+    </appender>
+
+    <!--<appender name="file.async.service" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>256</queueSize>
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="file.service"/>
+    </appender>-->
+
+    <appender name="file.async.other" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>256</queueSize>
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="file.web"/>
+    </appender>
+
+
+
+    <!-- root将级别为${log.root.level}及大于${log.root.level}的日志信息交给已经配置好的名为“Console”的appender处理，“Console”appender将信息打印到Console,其它同理 -->
+    <root level="INFO">
+        <appender-ref ref="file.error.web"/>
+        <appender-ref ref="file.web"/>
+        <appender-ref ref="stdout"/>
+    </root>
+</configuration> 

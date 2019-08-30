@@ -10,7 +10,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource(value = "classpath:config/mysql.properties")
+@PropertySource(value = {"classpath:conf/mysql.properties"})
 public class MySQLConfig {
 
     @Value(value="${blockchain.mysql.jdbc.url}")

@@ -183,9 +183,9 @@
 
             <properties>
                 <profiles.activation>local</profiles.activation>
-                <blockchain.mysql.jdbc.url>jdbc:mysql://localhost:3306/blockchain?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;autoReconnect=true</blockchain.mysql.jdbc.url>
+                <blockchain.mysql.jdbc.url>jdbc:mysql://39.106.190.132:3306/blockchain?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;autoReconnect=true</blockchain.mysql.jdbc.url>
                 <blockchain.mysql.jdbc.user>root</blockchain.mysql.jdbc.user>
-                <blockchain.mysql.jdbc.password>root</blockchain.mysql.jdbc.password>
+                <blockchain.mysql.jdbc.password>942558046</blockchain.mysql.jdbc.password>
                 <blockchain.mysql.jdbc.driver>com.mysql.jdbc.Driver</blockchain.mysql.jdbc.driver>
             </properties>
         </profile>
