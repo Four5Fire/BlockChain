@@ -1,0 +1,4 @@
+ip:132.232.26.162
+ssh-port:22
+username:ubuntu
+password:asdfghjkl@123
