@@ -23,4 +23,7 @@
     <select id="selectUserByEmail" resultMap="userEntityMap">
         select * from user_info where email = #{email};
     </select>
+    <select id="selectUserCountByUsername" resultType="java.lang.Integer">
+        select count(*) from user_info where username = #{username};
+    </select>
 </mapper>

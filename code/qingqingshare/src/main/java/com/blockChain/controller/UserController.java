@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class UserController extends BaseController{
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/regist")
+    @RequestMapping(value = "/regist",method = RequestMethod.POST)
     @ResponseBody
     public HashMap regist(HttpServletRequest request){
         ModelVO modelVO = new ModelVO();
@@ -66,7 +67,7 @@ public class UserController extends BaseController{
         return modelVO.getResult();
     }
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
     public HashMap login(HttpServletRequest request){
         ModelVO modelVO = new ModelVO();
@@ -79,6 +80,24 @@ public class UserController extends BaseController{
             modelVO.setMsg("参数缺省");
             logger.info("用户注册参数缺省");
             return modelVO.getResult();
+        }
+        int result = userService.checkUser(username,password);
+        switch (result){
+            case 200:
+                modelVO.setCode(CodeEnum.SUCCESS.getCode());
+                modelVO.setMsg("用户登录成功");
+                break;
+            case 403:
+                modelVO.setCode(CodeEnum.USER_CHECK_FAILED.getCode());
+                modelVO.setMsg("密码错误");
+                logger.info(username+":密码错误");
+                break;
+            case 407:
+                modelVO.setCode(CodeEnum.USER_NOT_EXIST.getCode());
+                modelVO.setMsg("用户未注册");
+                logger.info(username+":该用户未注册");
+            default:
+                modelVO.setCode(result);
         }
         return modelVO.getResult();
     }

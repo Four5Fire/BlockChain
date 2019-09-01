@@ -13,4 +13,6 @@ public interface UserDAO {
     UserEntity selectUserByUsername(@Param("username") String username);
 
     UserEntity selectUserByEmail(@Param("email") String email);
+
+    int selectUserCountByUsername(@Param("username")String username);
 }
