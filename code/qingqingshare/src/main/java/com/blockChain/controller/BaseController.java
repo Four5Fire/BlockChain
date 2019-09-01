@@ -6,9 +6,9 @@ import org.springframework.http.HttpRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class BaseRequest {
-    public HttpServletRequest request;
-    public HttpServletResponse response;
+public class BaseController {
+    private HttpServletRequest request;
+    private HttpServletResponse response;
 
     public void setRequest(HttpServletRequest request){
         this.request = request;
