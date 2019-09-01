@@ -34,7 +34,7 @@ public class UserController extends BaseController{
         String username = ActionUtil.getStrParam(request,"username");
         String password = ActionUtil.getStrParam(request,"password");
         String emailAdress = ActionUtil.getStrParam(request,"emailAddress");
-
+        System.out.println(emailAdress);
         if (StringUtil.isNullOrEmpty(username)||
             StringUtil.isNullOrEmpty(password)||
             StringUtil.isNullOrEmpty(emailAdress)){
@@ -63,7 +63,6 @@ public class UserController extends BaseController{
             default:
                 modelVO.setCode(result);
         }
-
         return modelVO.getResult();
     }
 }

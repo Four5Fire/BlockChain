@@ -1,4 +1,4 @@
-package com.blockChain.dao.mapper;
+package com.blockChain.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
