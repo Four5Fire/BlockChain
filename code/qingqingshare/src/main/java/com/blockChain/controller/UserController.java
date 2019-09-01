@@ -101,4 +101,41 @@ public class UserController extends BaseController{
         }
         return modelVO.getResult();
     }
+
+    @RequestMapping(value = "/reset",method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap resetPassword(HttpServletRequest request){
+        ModelVO modelVO = new ModelVO();
+        String username = ActionUtil.getStrParam(request,"username");
+        String password = ActionUtil.getStrParam(request,"password");
+        String email = ActionUtil.getStrParam(request,"emailAddress");
+
+        if (StringUtil.isNullOrEmpty(username)||
+                StringUtil.isNullOrEmpty(password)||
+                StringUtil.isNullOrEmpty(email)){
+            modelVO.setCode(CodeEnum.PARAM_MISS.getCode());
+            modelVO.setMsg("参数缺省");
+            logger.info("用户注册参数缺省");
+            return modelVO.getResult();
+        }
+        int result = userService.resetUser(username,password,email);
+        switch (result){
+            case 200:
+                modelVO.setCode(CodeEnum.SUCCESS.getCode());
+                modelVO.setMsg("密码重置成功");
+                break;
+            case 403:
+                modelVO.setCode(CodeEnum.USER_CHECK_FAILED.getCode());
+                modelVO.setMsg("信息校验失败");
+                logger.info(username+":信息校验失败");
+                break;
+            case 407:
+                modelVO.setCode(CodeEnum.USER_NOT_EXIST.getCode());
+                modelVO.setMsg("用户未注册");
+                logger.info(username+":该用户未注册");
+            default:
+                modelVO.setCode(result);
+        }
+        return modelVO.getResult();
+    }
 }

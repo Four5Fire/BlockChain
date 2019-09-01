@@ -8,4 +8,6 @@ public interface UserService {
     int addUser(String username, String password, String email);
 
     int checkUser(String username, String password);
+
+    int resetUser(String username, String password, String email);
 }

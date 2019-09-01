@@ -15,4 +15,6 @@ public interface UserDAO {
     UserEntity selectUserByEmail(@Param("email") String email);
 
     int selectUserCountByUsername(@Param("username")String username);
+
+    int updateUserPassword(@Param("username")String username, @Param("password")String password);
 }

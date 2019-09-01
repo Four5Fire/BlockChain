@@ -57,4 +57,32 @@ public class UserServiceImpl implements UserService {
         }
         return CodeEnum.SUCCESS.getCode();
     }
+
+    @Override
+    public int resetUser(String username, String password, String email) {
+
+        if (userDAO.selectUserCountByUsername(username) <= 0){
+            return CodeEnum.USER_NOT_EXIST.getCode();
+        }
+
+        UserEntity user;
+        try{
+            user = userDAO.selectUserByUsername(username);
+        }catch (Exception e){
+            e.printStackTrace();
+            return CodeEnum.INNER_ERROR.getCode();
+        }
+
+        if (!email.equals(user.getEmail())){
+            return CodeEnum.USER_CHECK_FAILED.getCode();
+        }
+
+        try {
+            userDAO.updateUserPassword(username,password);
+        }catch (Exception e){
+            e.printStackTrace();
+            return CodeEnum.INNER_ERROR.getCode();
+        }
+        return CodeEnum.SUCCESS.getCode();
+    }
 }

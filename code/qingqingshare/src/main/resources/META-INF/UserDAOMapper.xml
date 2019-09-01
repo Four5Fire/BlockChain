@@ -14,6 +14,12 @@
         insert into user_info(username, password, email)
         values (#{param1,jdbcType=VARCHAR}  ,#{param2,jdbcType=VARCHAR}  ,#{param3,jdbcType=VARCHAR} );
     </insert>
+    <update id="updateUserPassword">
+        update user_info set password = #{password}
+        <where>
+            username = #{username}
+        </where>
+    </update>
     <delete id="deleteUserByUserName">
         delete from user_info where username = #{username};
     </delete>
