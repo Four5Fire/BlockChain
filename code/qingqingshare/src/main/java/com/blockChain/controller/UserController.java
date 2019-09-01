@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 @CrossOrigin
 @RequestMapping("/user")
-public class UserController extends BaseRequest{
+public class UserController extends BaseController{
 
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -29,7 +30,7 @@ public class UserController extends BaseRequest{
 
     @RequestMapping("/regist")
     @ResponseBody
-    public HashMap regist(){
+    public HashMap regist(HttpServletRequest request){
         ModelVO modelVO = new ModelVO();
         String username = ActionUtil.getStrParam(request,"username");
         String password = ActionUtil.getStrParam(request,"password");

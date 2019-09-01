@@ -15,6 +15,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addUser(String username, String password, String emailAddress) {
 
+        System.out.println(userDAO.selectUserByUserName(username));
+
         if (userDAO.selectUserByUserName(username) > 0){
             return CodeEnum.USERNAME_REGISTRIED.getCode();
         }

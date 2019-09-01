@@ -9,8 +9,7 @@
     <delete id="deleteUserByUserName">
         delete from user_info where username = #{username};
     </delete>
-
-    <select id="selectUserByUserName" parameterType="string" resultType="java.lang.Integer">
+    <select id="selectUserByUserName" resultType="java.lang.Integer">
         select count(*) from user_info where username = #{username};
     </select>
     <select id="selectUserByEmailAddress" resultType="java.lang.Integer">
