@@ -139,6 +139,7 @@ public class UserController extends BaseController{
     }
 
     @RequestMapping(value = "/query",method = RequestMethod.POST)
+    @ResponseBody
     public HashMap userQuery(HttpServletRequest request){
         ModelVO modelVO = new ModelVO();
         String username = ActionUtil.getStrParam(request,"username");
@@ -160,8 +161,8 @@ public class UserController extends BaseController{
         }
 
         modelVO.setCode(CodeEnum.SUCCESS.getCode());
-        modelVO.setMsg();
-
+        modelVO.setMsg("查询成功");
+        modelVO.setData(userService.selectUserByUsername(username,only));
         return modelVO.getResult();
     }
 }

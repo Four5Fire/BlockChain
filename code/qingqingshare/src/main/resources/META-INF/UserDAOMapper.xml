@@ -32,4 +32,15 @@
     <select id="selectUserCountByUsername" resultType="java.lang.Integer">
         select count(*) from user_info where username = #{username};
     </select>
+    <select id="selectUserListByUsername" resultMap="userEntityMap">
+        select * from user_info
+        <where>
+            <if test="only =='true'.toString()">
+                username = #{username}
+            </if>
+            <if test="only == 'false'.toString()">
+                username like '%${username}%'
+            </if>
+        </where>
+    </select>
 </mapper>
