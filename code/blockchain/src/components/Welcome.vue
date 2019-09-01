@@ -65,9 +65,6 @@
       },
       methods: {
         change: function (param) {
-          // this.logi=true;
-          // this.regi=true;
-          // this.rese=true;
           this.name=this.mail=this.pswd=this.pswd2='';
           switch (this.type){
             case 'login':this.logi=false;break;
@@ -84,8 +81,6 @@
           }else if(this.pswd===''){
             this.$message.error('请输入密码');
           }else {
-            this.$message.success('登录成功');
-            this.$router.push({path: '/File'});
             //   axios({
             //     method: 'post',
             //     url: URL+'login',
@@ -94,8 +89,8 @@
             //       "password":this.pswd,
             //     }
             //   }).then((res) => {
-            //     this.$message.success('登录成功');
-            //     this.$router.push({path: '/File'});
+                this.$message.success('登录成功');
+                this.$router.push({path: '/File'});
             //   }).catch((err)=>{
             //     console.log(err);
             //     this.$message.error(err.msg);
@@ -114,8 +109,6 @@
           }else if(this.pswd!==this.pswd2) {
             this.$message.error('两次输入密码不一致');
           }else {
-            this.$message.success('注册成功');
-            this.login();
           //   axios({
           //     method: 'post',
           //     url: URL + 'regist',
@@ -127,8 +120,8 @@
           //   }).then((res) => {
           //     console.log(res);
           //     if(res.code==='200') {
-          //       this.$message.success('注册成功');
-          //       this.change('login');
+                this.$message.success('注册成功');
+                this.change('login');
           //     }else{
           //       this.$message.error(res.msg);
           //     }
@@ -149,8 +142,6 @@
           }else if(this.pswd!==this.pswd2) {
             this.$message.error('两次输入密码不一致');
           }else {
-            this.$message.success('密码重置成功');
-            this.login();
           //   axios({
           //     method: 'post',
           //     url: URL + 'regist',
@@ -162,8 +153,8 @@
           //   }).then((res) => {
           //     console.log(res);
           //     if(res.code==='200') {
-          //       this.$message.success('密码重置成功');
-          //       this.change('login');
+                this.$message.success('密码重置成功');
+                this.change('login');
           //     }else{
           //       this.$message.error(res.msg);
           //     }
