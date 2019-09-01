@@ -121,7 +121,7 @@
           //     console.log(res);
           //     if(res.code==='200') {
                 this.$message.success('注册成功');
-                this.change('login');
+                this.login();
           //     }else{
           //       this.$message.error(res.msg);
           //     }
@@ -154,7 +154,7 @@
           //     console.log(res);
           //     if(res.code==='200') {
                 this.$message.success('密码重置成功');
-                this.change('login');
+                this.login();
           //     }else{
           //       this.$message.error(res.msg);
           //     }
