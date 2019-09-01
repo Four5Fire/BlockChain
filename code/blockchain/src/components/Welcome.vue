@@ -65,12 +65,10 @@
       },
       methods: {
         change: function (param) {
-          this.logi=true;
-          this.regi=true;
-          this.rese=true;
+          // this.logi=true;
+          // this.regi=true;
+          // this.rese=true;
           this.name=this.mail=this.pswd=this.pswd2='';
-          console.log(this.data);
-          console.log(param);
           switch (this.type){
             case 'login':this.logi=false;break;
             case 'register':this.regi=false;break;
@@ -106,18 +104,18 @@
         },
 
         register:function(){
-          // const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-          // if(this.name===''||this.name.length<4||this.name.length>10){
-          //   this.$message.error('请输入长度为4-10的用户名');
-          // }else if(this.mail===''||reg.test(this.mail)){
-          //   this.$message.error('请输入正确格式的邮箱');
-          // }else if(this.pswd===''||this.pswd.length<8||this.pswd.length>16){
-          //   this.$message.error('请输入长度为8-16的密码');
-          // }else if(this.pswd!==this.pswd2) {
-          //   this.$message.error('两次输入密码不一致');
-          // }else {
+          const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+          if(this.name===''||this.name.length<4||this.name.length>10){
+            this.$message.error('请输入长度为4-10的用户名');
+          }else if(this.mail===''||reg.test(this.mail)){
+            this.$message.error('请输入正确格式的邮箱');
+          }else if(this.pswd===''||this.pswd.length<8||this.pswd.length>16){
+            this.$message.error('请输入长度为8-16的密码');
+          }else if(this.pswd!==this.pswd2) {
+            this.$message.error('两次输入密码不一致');
+          }else {
             this.$message.success('注册成功');
-            this.change('login');
+            this.login();
           //   axios({
           //     method: 'post',
           //     url: URL + 'regist',
@@ -138,21 +136,21 @@
           //     console.log(err);
           //     this.$message.error(err.msg);
           //   });
-          // }
+          }
         },
 
         reset:function () {
-          // if(this.name===''){
-          //   this.$message.error('请输入用户名');
-          // }else if(this.mail===''){
-          //   this.$message.error('请输入邮箱');
-          // }else if(this.pswd===''||this.pswd.length<8||this.pswd.length>16){
-          //   this.$message.error('请输入长度为8-16的密码');
-          // }else if(this.pswd!==this.pswd2) {
-          //   this.$message.error('两次输入密码不一致');
-          // }else {
+          if(this.name===''){
+            this.$message.error('请输入用户名');
+          }else if(this.mail===''){
+            this.$message.error('请输入邮箱');
+          }else if(this.pswd===''||this.pswd.length<8||this.pswd.length>16){
+            this.$message.error('请输入长度为8-16的密码');
+          }else if(this.pswd!==this.pswd2) {
+            this.$message.error('两次输入密码不一致');
+          }else {
             this.$message.success('密码重置成功');
-            this.change('login');
+            this.login();
           //   axios({
           //     method: 'post',
           //     url: URL + 'regist',
@@ -173,7 +171,7 @@
           //     console.log(err);
           //     this.$message.error(err.msg);
           //   });
-          // }
+          }
         }
       }
     }
