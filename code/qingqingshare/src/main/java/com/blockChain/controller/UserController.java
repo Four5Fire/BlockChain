@@ -65,4 +65,21 @@ public class UserController extends BaseController{
         }
         return modelVO.getResult();
     }
+
+    @RequestMapping("/login")
+    @ResponseBody
+    public HashMap login(HttpServletRequest request){
+        ModelVO modelVO = new ModelVO();
+        String username = ActionUtil.getStrParam(request,"username");
+        String password = ActionUtil.getStrParam(request,"password");
+
+        if (StringUtil.isNullOrEmpty(username)||
+                StringUtil.isNullOrEmpty(password)){
+            modelVO.setCode(CodeEnum.PARAM_MISS.getCode());
+            modelVO.setMsg("参数缺省");
+            logger.info("用户注册参数缺省");
+            return modelVO.getResult();
+        }
+        return modelVO.getResult();
+    }
 }
