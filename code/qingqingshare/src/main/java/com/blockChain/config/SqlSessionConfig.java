@@ -27,11 +27,11 @@ public class SqlSessionConfig implements TransactionManagementConfigurer{
     public SqlSessionFactory sqlSessionFactory(){
         SqlSessionFactoryBean bean=new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
-        bean.setTypeAliasesPackage("com.blockChain");
+        bean.setTypeAliasesPackage("com.blockChain.entity");
 
         ResourcePatternResolver resolver=new PathMatchingResourcePatternResolver();
         try{
-            bean.setMapperLocations(resolver.getResources("classpath*:META-INF/*Mapper"));
+            bean.setMapperLocations(resolver.getResources("classpath*:META-INF/*Mapper.xml"));
             return bean.getObject();
         }catch (Exception e){
             throw new RuntimeException();

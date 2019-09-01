@@ -15,7 +15,7 @@ public class MapperScannerConfig {
     public MapperScannerConfigurer mapperScannerConfigurer(){
         MapperScannerConfigurer mapperScannerConfigurer=new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        mapperScannerConfigurer.setBasePackage("com.blockChain.dao.mapper");
+        mapperScannerConfigurer.setBasePackage("com.blockChain.dao");
         return mapperScannerConfigurer;
     }
 }
