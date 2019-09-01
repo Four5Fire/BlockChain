@@ -1,7 +1,7 @@
 package com.blockChain.service.Impl;
 
 import com.blockChain.Enum.CodeEnum;
-import com.blockChain.dao.UserDAO;
+import com.blockChain.dao.mapper.UserDAO;
 import com.blockChain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
