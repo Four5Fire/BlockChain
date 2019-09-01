@@ -10,6 +10,9 @@ public class ActionUtil extends BaseController {
         String paramter;
         try {
             paramter = request.getParameter(param);
+            if ("password".equals(param)){
+                paramter = MD5Util.md5(paramter);
+            }
         }catch (Exception e){
 //            e.printStackTrace();
             paramter = null;

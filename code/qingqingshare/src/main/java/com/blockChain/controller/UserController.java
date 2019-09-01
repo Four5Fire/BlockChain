@@ -33,18 +33,18 @@ public class UserController extends BaseController{
         ModelVO modelVO = new ModelVO();
         String username = ActionUtil.getStrParam(request,"username");
         String password = ActionUtil.getStrParam(request,"password");
-        String emailAdress = ActionUtil.getStrParam(request,"emailAddress");
-        System.out.println(emailAdress);
+        String email = ActionUtil.getStrParam(request,"emailAdress");
+        System.out.println(email);
         if (StringUtil.isNullOrEmpty(username)||
             StringUtil.isNullOrEmpty(password)||
-            StringUtil.isNullOrEmpty(emailAdress)){
+            StringUtil.isNullOrEmpty(email)){
             modelVO.setCode(CodeEnum.PARAM_MISS.getCode());
             modelVO.setMsg("参数缺省");
             logger.info("用户注册参数缺省");
             return modelVO.getResult();
         }
 
-        int result = userService.addUser(username,password,emailAdress);
+        int result = userService.addUser(username,password,email);
         switch (result){
             case 200:
                 modelVO.setCode(CodeEnum.SUCCESS.getCode());

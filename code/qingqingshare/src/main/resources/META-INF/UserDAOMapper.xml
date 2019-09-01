@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blockChain.dao.UserDAO">
+    
+    <resultMap id="userEntityMap" type="com.blockChain.entity.UserEntity">
+        <id column="id" property="id"></id>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <result column="email" property="email"></result>
+    </resultMap>
+    
     <insert id="insertUser">
         insert into user_info(username, password, email)
         values (#{param1,jdbcType=VARCHAR}  ,#{param2,jdbcType=VARCHAR}  ,#{param3,jdbcType=VARCHAR} );
@@ -9,10 +17,10 @@
     <delete id="deleteUserByUserName">
         delete from user_info where username = #{username};
     </delete>
-    <select id="selectUserByUserName" resultType="java.lang.Integer">
-        select count(*) from user_info where username = #{username};
+    <select id="selectUserByUsername" resultMap="userEntityMap">
+        select * from user_info where username = #{username};
     </select>
-    <select id="selectUserByEmailAddress" resultType="java.lang.Integer">
-        select count(*) from user_info where email = #{emailAddress};
+    <select id="selectUserByEmail" resultMap="userEntityMap">
+        select * from user_info where email = #{email};
     </select>
 </mapper>

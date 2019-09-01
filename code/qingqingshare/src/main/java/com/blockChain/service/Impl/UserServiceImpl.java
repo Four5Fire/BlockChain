@@ -13,19 +13,17 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
 
     @Override
-    public int addUser(String username, String password, String emailAddress) {
+    public int addUser(String username, String password, String email) {
 
-        System.out.println(userDAO.selectUserByUserName(username));
-
-        if (userDAO.selectUserByUserName(username) > 0){
+        if (userDAO.selectUserByUsername(username) != null){
             return CodeEnum.USERNAME_REGISTRIED.getCode();
         }
-        if (userDAO.selectUserByEmailAddress(emailAddress) > 0){
+        if (userDAO.selectUserByEmail(email) != null){
             return CodeEnum.EMAIL_REGISTRIED.getCode();
         }
 
         try {
-            userDAO.insertUser(username,password,emailAddress);
+            userDAO.insertUser(username,password,email);
         }catch (Exception e){
             e.printStackTrace();
             return CodeEnum.INNER_ERROR.getCode();
