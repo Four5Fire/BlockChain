@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Welcome from '@/components/Welcome'
+import File from '@/components/File'
 
 Vue.use(Router)
 
@@ -8,8 +9,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
+      name: 'Welcome',
+      component: Welcome
+    },  {
+      path: '/',
+      name: 'File',
+      component: File
+    },
   ]
 })
