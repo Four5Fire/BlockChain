@@ -1,4 +1,4 @@
-package com.blockChain.VO;
+package com.blockChain.entity;
 
 import java.util.HashMap;
 import java.util.List;

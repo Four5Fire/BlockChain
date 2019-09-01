@@ -1,7 +1,7 @@
 package com.blockChain.controller;
 
 import com.blockChain.Enum.CodeEnum;
-import com.blockChain.VO.ModelVO;
+import com.blockChain.entity.ModelVO;
 import com.blockChain.service.UserService;
 import com.blockChain.util.ActionUtil;
 import com.blockChain.util.StringUtil;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @CrossOrigin
@@ -136,6 +135,33 @@ public class UserController extends BaseController{
             default:
                 modelVO.setCode(result);
         }
+        return modelVO.getResult();
+    }
+
+    @RequestMapping(value = "/query",method = RequestMethod.POST)
+    public HashMap userQuery(HttpServletRequest request){
+        ModelVO modelVO = new ModelVO();
+        String username = ActionUtil.getStrParam(request,"username");
+        String only = ActionUtil.getStrParam(request,"only");
+
+        if (StringUtil.isNullOrEmpty(username)||
+            StringUtil.isNullOrEmpty(only)){
+            modelVO.setCode(CodeEnum.PARAM_MISS.getCode());
+            modelVO.setMsg("参数缺省");
+            logger.info("用户注册参数缺省");
+            return modelVO.getResult();
+        }
+
+        if ("true".equals(only)&&"false".equals(only)){
+            modelVO.setCode(CodeEnum.PARAM_MISS.getCode());
+            modelVO.setMsg("查询规则不存在");
+            logger.info("查询规则不存在");
+            return modelVO.getResult();
+        }
+
+        modelVO.setCode(CodeEnum.SUCCESS.getCode());
+        modelVO.setMsg();
+
         return modelVO.getResult();
     }
 }
