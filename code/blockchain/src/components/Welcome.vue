@@ -43,6 +43,8 @@
 </template>
 
 <script>
+  // import * as axios from "axios";
+    const URL='';
     export default {
       name: "Welcome",
       data() {
@@ -63,10 +65,7 @@
       },
       methods: {
         change: function (param) {
-          this.logi=true;
-          this.regi=true;
-          this.rese=true;
-          this.name=this.mail=this.pswd=this.pswd='';
+          this.name=this.mail=this.pswd=this.pswd2='';
           switch (this.type){
             case 'login':this.logi=false;break;
             case 'register':this.regi=false;break;
@@ -75,14 +74,95 @@
           }
           this.type = param;
         },
+
         login: function () {
-          this.$router.push({path: '/File'});
+          if(this.name===''){
+            this.$message.error('请输入用户名');
+          }else if(this.pswd===''){
+            this.$message.error('请输入密码');
+          }else {
+            //   axios({
+            //     method: 'post',
+            //     url: URL+'login',
+            //     data:{
+            //       "username":this.name,
+            //       "password":this.pswd,
+            //     }
+            //   }).then((res) => {
+                this.$message.success('登录成功');
+                this.$router.push({path: '/File'});
+            //   }).catch((err)=>{
+            //     console.log(err);
+            //     this.$message.error(err.msg);
+            //   });
+          }
         },
+
         register:function(){
-
+          const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+          if(this.name===''||this.name.length<4||this.name.length>10){
+            this.$message.error('请输入长度为4-10的用户名');
+          }else if(this.mail===''||reg.test(this.mail)){
+            this.$message.error('请输入正确格式的邮箱');
+          }else if(this.pswd===''||this.pswd.length<8||this.pswd.length>16){
+            this.$message.error('请输入长度为8-16的密码');
+          }else if(this.pswd!==this.pswd2) {
+            this.$message.error('两次输入密码不一致');
+          }else {
+          //   axios({
+          //     method: 'post',
+          //     url: URL + 'regist',
+          //     data: {
+          //       "username": this.name,
+          //       "password": this.pswd,
+          //       "emailAddress":this.mail,
+          //     }
+          //   }).then((res) => {
+          //     console.log(res);
+          //     if(res.code==='200') {
+                this.$message.success('注册成功');
+                this.login();
+          //     }else{
+          //       this.$message.error(res.msg);
+          //     }
+          //   }).catch((err) => {
+          //     console.log(err);
+          //     this.$message.error(err.msg);
+          //   });
+          }
         },
-        reset:function () {
 
+        reset:function () {
+          if(this.name===''){
+            this.$message.error('请输入用户名');
+          }else if(this.mail===''){
+            this.$message.error('请输入邮箱');
+          }else if(this.pswd===''||this.pswd.length<8||this.pswd.length>16){
+            this.$message.error('请输入长度为8-16的密码');
+          }else if(this.pswd!==this.pswd2) {
+            this.$message.error('两次输入密码不一致');
+          }else {
+          //   axios({
+          //     method: 'post',
+          //     url: URL + 'regist',
+          //     data: {
+          //       "username": this.name,
+          //       "emailAddress":this.mail,
+          //       "password": this.pswd,
+          //     }
+          //   }).then((res) => {
+          //     console.log(res);
+          //     if(res.code==='200') {
+                this.$message.success('密码重置成功');
+                this.login();
+          //     }else{
+          //       this.$message.error(res.msg);
+          //     }
+          //   }).catch((err) => {
+          //     console.log(err);
+          //     this.$message.error(err.msg);
+          //   });
+          }
         }
       }
     }
@@ -96,9 +176,9 @@
   }
 
   #right{
-    width: 40%;
+    width: 27%;
     height: 100%;
-    margin-right: 10%;
+    margin-right: 12%;
     float: right;
   }
 
@@ -107,6 +187,7 @@
     color: #fff;
     font-size: 4em;
     text-align: center;
+    font-family:"MV Boli";
   }
 
   #border{
@@ -130,11 +211,12 @@
     width: 80%;
     margin: 0 auto;
     padding:20px;
-    padding-top:50px;
+    padding-top:80px;
     padding-bottom:50px;
   }
 
   .form .item{
+    width: 90%;
     margin: 0 auto;
     margin-top:10px;
     margin-bottom:20px;
@@ -144,7 +226,7 @@
     margin: 0 auto;
     text-decoration: underline;
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .item .link:hover{
