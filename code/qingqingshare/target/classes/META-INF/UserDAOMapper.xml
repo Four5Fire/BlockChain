@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blockChain.dao.UserDAO">
+    <insert id="insertUser">
+        insert into user_info(username, password, email)
+        values (#{param1,jdbcType=VARCHAR}  ,#{param2,jdbcType=VARCHAR}  ,#{param3,jdbcType=VARCHAR} );
+    </insert>
+    <delete id="deleteUserByUserName">
+        delete from user_info where username = #{username};
+    </delete>
+    <select id="selectUserByUserName" resultType="java.lang.Integer">
+        select count(*) from user_info where username = #{username};
+    </select>
+    <select id="selectUserByEmailAddress" resultType="java.lang.Integer">
+        select count(*) from user_info where email = #{emailAddress};
+    </select>
+</mapper>
