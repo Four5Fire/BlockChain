@@ -27,26 +27,28 @@ public class FileServiceImpl implements FileService {
         new Thread(){
             @Override
             public void run(){
-                saveInServer(onefile,file);
+                saveInServer(file);
             }}.start();
         fileDAO.insertFile(onefile);
     }
 
-    public void saveInServer(FileEntity onefile,MultipartFile file){
-        String targetFilepath="./savedFile/"+onefile.getFilename();
-        byte[] buffer=new byte[10*1024];
+    public void saveInServer(MultipartFile file){
+        String targetFilepath="C:\\Users\\htj\\Desktop\\test\\"+file.getOriginalFilename();
         try {
-            InputStream in=file.getInputStream();
-            FileOutputStream out=new FileOutputStream(targetFilepath);
-            while (in.read(buffer)!=-1){
-                out.write(buffer);
-            }
-            in.close();
-            out.close();
+            BufferedOutputStream outputStream=new BufferedOutputStream(
+                    new FileOutputStream(new File(targetFilepath)));
+            outputStream.write(file.getBytes());
+            outputStream.flush();
+            outputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public boolean selectFile(String username,String filename){
+        if(fileDAO.selectFileByUserAndFilename(username,filename)==null)
+            return false;
+        return true;
     }
 }

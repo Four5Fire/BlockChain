@@ -11,4 +11,6 @@ public interface FileService {
     List<FileEntity> getFileListByUsername(String username);
 
     void addFile(FileEntity onefile, MultipartFile file);
+
+    public boolean selectFile(String username,String filename);
 }

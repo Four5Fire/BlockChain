@@ -11,4 +11,6 @@ public interface FileDAO {
     List<FileEntity> selectByUsername(String username);
 
     void insertFile(FileEntity fileEntity);
+
+    FileEntity selectFileByUserAndFilename(String username,String filename);
 }
