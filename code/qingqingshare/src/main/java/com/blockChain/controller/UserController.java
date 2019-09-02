@@ -66,6 +66,7 @@ public class UserController extends BaseController{
                 break;
             default:
                 modelVO.setCode(result);
+                modelVO.setMsg("inner server error");
         }
         return modelVO.getResult();
     }
@@ -101,6 +102,7 @@ public class UserController extends BaseController{
                 logger.info(username+":该用户未注册");
             default:
                 modelVO.setCode(result);
+                modelVO.setMsg("inner server error");
         }
         return modelVO.getResult();
     }
@@ -138,6 +140,7 @@ public class UserController extends BaseController{
                 logger.info(username+":该用户未注册");
             default:
                 modelVO.setCode(result);
+                modelVO.setMsg("inner server error");
         }
         return modelVO.getResult();
     }
