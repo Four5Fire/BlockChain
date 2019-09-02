@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
         for (UserEntity userEntity:userEntityList) {
             UserVO userVO = new UserVO();
             userVO.setUsername(userEntity.getUsername());
-            userVO.setUserPic("https://imgchr.com/i/nptJC4");
+            userVO.setUserPic("https://s2.ax1x.com/2019/09/01/nptJC4.jpg");
             userVOList.add(userVO);
         }
 
