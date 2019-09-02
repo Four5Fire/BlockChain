@@ -11,8 +11,9 @@
     </resultMap>
     
     <insert id="insertUser">
-        insert into user_info(username, password, email)
-        values (#{param1,jdbcType=VARCHAR}  ,#{param2,jdbcType=VARCHAR}  ,#{param3,jdbcType=VARCHAR} );
+        insert into user_info(username, password, email, sex, grade)
+        values (#{param1,jdbcType=VARCHAR}  ,#{param2,jdbcType=VARCHAR}  ,#{param3,jdbcType=VARCHAR} ,
+                #{param4,jdbcType=VARCHAR}  ,#{param5,jdbcType=VARCHAR});
     </insert>
     <update id="updateUserPassword">
         update user_info set password = #{password}

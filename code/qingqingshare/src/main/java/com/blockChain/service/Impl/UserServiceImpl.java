@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
 
     @Override
-    public int addUser(String username, String password, String email) {
+    public int addUser(String username, String password, String email,String sex, String grade) {
 
         if (userDAO.selectUserByUsername(username) != null) {
             return CodeEnum.USERNAME_REGISTRIED.getCode();
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            userDAO.insertUser(username, password, email);
+            userDAO.insertUser(username, password, email,sex,grade);
         } catch (Exception e) {
             e.printStackTrace();
             return CodeEnum.INNER_ERROR.getCode();

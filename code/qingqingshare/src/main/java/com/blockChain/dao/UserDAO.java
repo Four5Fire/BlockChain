@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface UserDAO {
     int insertUser(@Param("username") String username, @Param("password") String password,
-                   @Param("email") String emailAddress);
+                   @Param("email") String emailAddress,@Param("sex")String sex,@Param("grade")String grade);
     int deleteUserByUserName(@Param("username") String username);
 
     UserEntity selectUserByUsername(@Param("username") String username);
