@@ -19,9 +19,20 @@
           <el-collapse-transition>
             <div class="form" v-show="type==='register'">
               <div class="item"><el-input prefix-icon="el-icon-user" v-model="name" placeholder="请输入用户名"></el-input></div>
-              <div class="item"><el-input prefix-icon="el-icon-message" v-model="mail" placeholder="请输入邮箱"></el-input></div>
               <div class="item"><el-input prefix-icon="el-icon-lock" v-model="pswd" placeholder="请输入密码" show-password></el-input></div>
               <div class="item"><el-input prefix-icon="el-icon-lock" v-model="pswd2" placeholder="请再次输入密码" show-password></el-input></div>
+              <div class="item"><el-input prefix-icon="el-icon-message" v-model="mail" placeholder="请输入邮箱"></el-input></div>
+              <div class="item" align="center">
+                <el-radio-group v-model="sex">
+                  <el-radio-button label="男" border>男</el-radio-button>
+                  <el-radio-button label="女" border>女</el-radio-button>
+                </el-radio-group>
+              </div>
+              <div class="item">
+                <el-radio v-model="grade" label="primary" size="medium">小学</el-radio>
+                <el-radio v-model="grade" label="middle" size="medium">中学</el-radio>
+                <el-radio v-model="grade" label="senior" size="medium">大学</el-radio>
+              </div>
               <div class="item" align="center"><el-button type="primary" @click="register">注册并登录</el-button></div>
             </div>
           </el-collapse-transition>
@@ -43,7 +54,7 @@
 </template>
 
 <script>
-  // import * as axios from "axios";
+  import * as axios from "axios";
   const URL='';
   export default {
     name: "Welcome",
@@ -58,6 +69,8 @@
         mail:'',
         pswd:'',
         pswd2:'',
+        sex:'',
+        grade:''
       }
     },
     mounted() {
@@ -99,6 +112,8 @@
       },
 
       register:function(){
+        console.log(this.sex);
+        console.log(this.grade);
         const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
         if(this.name===''||this.name.length<4||this.name.length>10){
           this.$message.error('请输入长度为4-10的用户名');
@@ -108,27 +123,33 @@
           this.$message.error('请输入长度为8-16的密码');
         }else if(this.pswd!==this.pswd2) {
           this.$message.error('两次输入密码不一致');
+        }else if(this.sex===''){
+          this.$message.error('请选择性别');
+        }else if(this.grade===''){
+          this.$message.error('请选择年级');
         }else {
-          //   axios({
-          //     method: 'post',
-          //     url: URL + 'regist',
-          //     data: {
-          //       "username": this.name,
-          //       "password": this.pswd,
-          //       "emailAddress":this.mail,
-          //     }
-          //   }).then((res) => {
-          //     console.log(res);
-          //     if(res.code==='200') {
-          this.$message.success('注册成功');
-          this.login();
-          //     }else{
-          //       this.$message.error(res.msg);
-          //     }
-          //   }).catch((err) => {
-          //     console.log(err);
-          //     this.$message.error(err.msg);
-          //   });
+          // axios({
+          //   method: 'post',
+          //   url: URL + 'regist',
+          //   data: {
+          //     "username": this.name,
+          //     "password": this.pswd,
+          //     "emailAddress": this.mail,
+          //     "sex":this.sex,
+          //     "grade":this.grade,
+          //   }
+          // }).then((res) => {
+          //   console.log(res);
+          //   if (res.code === '200') {
+              this.$message.success('注册成功');
+              this.login();
+        //     } else {
+        //       this.$message.error(res.msg);
+        //     }
+        //   }).catch((err) => {
+        //     console.log(err);
+        //     this.$message.error(err.msg);
+        //   });
         }
       },
 
@@ -176,14 +197,14 @@
   }
 
   #right{
-    width: 27%;
+    width: 30%;
     height: 100%;
     margin-right: 12%;
     float: right;
   }
 
   #text{
-    margin-top: 12%;
+    margin-top: 10%;
     color: #fff;
     font-size: 4em;
     text-align: center;
@@ -212,12 +233,12 @@
     width: 80%;
     margin: 0 auto;
     padding:20px;
-    padding-top:80px;
-    padding-bottom:50px;
+    padding-top:70px;
+    padding-bottom:40px;
   }
 
   .form .item{
-    width: 90%;
+    width: 95%;
     margin: 0 auto;
     margin-top:10px;
     margin-bottom:20px;
