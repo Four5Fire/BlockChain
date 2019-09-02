@@ -3,7 +3,6 @@ package com.blockChain.service.Impl;
 import com.blockChain.dao.FileDAO;
 import com.blockChain.entity.FileEntity;
 import com.blockChain.service.FileService;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,9 +45,14 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
         }
     }
+
     public boolean selectFile(String username,String filename){
         if(fileDAO.selectFileByUserAndFilename(username,filename)==null)
             return false;
         return true;
+    }
+
+    public void deleteFile(File file){
+        if(file.exists()) file.delete();
     }
 }
