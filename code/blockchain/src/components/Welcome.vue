@@ -57,7 +57,7 @@
   import * as axios from "axios";
   const URL='';
   export default {
-    name: "Welcome",
+    name: "welcome",
     data() {
       return {
         logi: true,
@@ -103,7 +103,12 @@
           //     }
           //   }).then((res) => {
           this.$message.success('登录成功');
-          this.$router.push({path: '/File'});
+          this.$router.push({
+            path: '/file',
+            query:{
+              "username":this.name
+            },
+          });
           //   }).catch((err)=>{
           //     console.log(err);
           //     this.$message.error(err.msg);

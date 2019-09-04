@@ -3,19 +3,21 @@ import Router from 'vue-router'
 import Welcome from '@/components/Welcome'
 import File from '@/components/File'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
-  mode:'history',
+  mode:'hash',
   routes: [
     {
       path: '/',
-      name: 'Welcome',
+      name: 'welcome',
       component: Welcome
     },  {
-      path: '/',
-      name: 'File',
+      path: '/file',
+      name: 'file',
       component: File
-    },
+    },{
+      path:'*',
+      redirect:'/'},
   ]
 })
