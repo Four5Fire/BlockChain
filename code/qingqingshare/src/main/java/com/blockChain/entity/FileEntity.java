@@ -13,4 +13,5 @@ public class FileEntity {
     private String filesize;
     private String createTime;
     private String modifyTime;
+    private int shareState;
 }

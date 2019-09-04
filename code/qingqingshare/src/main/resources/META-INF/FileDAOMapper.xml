@@ -10,7 +10,12 @@
         <result column="filesize" property="filesize"></result>
         <result column="create_time" property="createTime"></result>
         <result column="modify_time" property="modifyTime"></result>
+        <result column="share_state" property="shareState"></result>
     </resultMap>
+    <delete id="deleteOneFile">
+        delete from file_info
+        where file_info.username=#{param1} and id=#{param2}
+    </delete>
 
     <select id="selectByUsername" resultMap="userEntityMap">
         select * from file_info
@@ -20,6 +25,13 @@
         select * from file_info
         where file_info.username=#{param1,jdbcType=VARCHAR}
         and file_info.filename=#{param2,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAllFile" resultType="com.blockChain.entity.FileEntity">
+        select * from file_info;
+    </select>
+    <select id="getFileById" resultType="com.blockChain.entity.FileEntity">
+        select * from  file_info where id=#{fileId}
     </select>
 
     <insert id="insertFile">
