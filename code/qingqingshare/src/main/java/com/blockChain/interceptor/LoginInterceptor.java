@@ -13,7 +13,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Object user=request.getSession().getAttribute("loginUser");
         System.out.println(user);
-        //未登录，则拦截请求，跳回登录页面
+        //未登录，则拦截请求，返回状态码为408
         if(user==null){
             response.setStatus(408);
             return false;
