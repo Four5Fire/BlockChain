@@ -34,6 +34,7 @@ public class FileController extends BaseController {
     @RequestMapping(value = "/showfile",method = RequestMethod.POST)
     @ResponseBody
     public HashMap getFileByUsername(HttpServletRequest request){
+
         ModelVO modelVO=new ModelVO();
         String username= ActionUtil.getStrParam(request,"username");
         List<FileEntity> files=fileService.getFileListByUsername(username);
@@ -46,6 +47,7 @@ public class FileController extends BaseController {
     @RequestMapping(value = "/upload",method = RequestMethod.PUT)
     @ResponseBody
     public HashMap loadFile(HttpServletRequest request){
+
         ModelVO modelVO=new ModelVO();
         modelVO.setCode(200);
         //获取用户明
@@ -111,5 +113,6 @@ public class FileController extends BaseController {
         }
         return modelVO.getResult();
     }
+
 
 }
