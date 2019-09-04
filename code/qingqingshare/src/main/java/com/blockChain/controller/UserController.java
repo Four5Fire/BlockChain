@@ -30,6 +30,7 @@ public class UserController extends BaseController{
     @RequestMapping(value = "/regist",method = RequestMethod.POST)
     @ResponseBody
     public HashMap regist(HttpServletRequest request){
+
         ModelVO modelVO = new ModelVO();
         String username = ActionUtil.getStrParam(request,"username");
         String password = ActionUtil.getStrParam(request,"password");
@@ -74,6 +75,7 @@ public class UserController extends BaseController{
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
     public HashMap login(HttpServletRequest request){
+
         ModelVO modelVO = new ModelVO();
         String username = ActionUtil.getStrParam(request,"username");
         String password = ActionUtil.getStrParam(request,"password");

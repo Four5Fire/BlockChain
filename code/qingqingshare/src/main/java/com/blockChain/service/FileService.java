@@ -12,5 +12,7 @@ public interface FileService {
 
     void addFile(FileEntity onefile, MultipartFile file);
 
-    public boolean selectFile(String username,String filename);
+    boolean selectFile(String username,String filename);
+
+    void deleteFile(File file);
 }
