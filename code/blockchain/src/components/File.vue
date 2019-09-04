@@ -15,7 +15,24 @@
         <div id="square">我的文件</div><div id="triangle"></div>
       </el-aside>
       <el-main>
-      aaa
+        <div id="title"><img src="../../static/home.png"/>文件列表</div>
+        <div id="files">
+          <el-checkbox-group v-model="checkedFiles" @change="onChangeFiles">
+            <el-checkbox v-for="item in files" :label="item.id" :key="item.id">
+              <el-row class="file">
+                <el-col span="3"><img src="../../static/file.png"/></el-col>
+                <el-col span="3">{{item.fileName}}</el-col>
+                <el-col span="3">{{item.fileSize}}</el-col>
+                <el-col span="3">{{item.uploadTime}}</el-col>
+                <el-col span="3">
+                  <div v-if="item.shareState===0">已共享</div>
+                  <img style="width: 3rem" src="../../static/share.png" v-else />
+                </el-col>
+              </el-row>
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+
       </el-main>
       <el-aside>
         aa
@@ -31,6 +48,38 @@
         return {
           username: '',
           filename:'',
+          files:[{
+            id:"1",
+            fileName:"test.txt",
+            fileSize:"13.2MB",
+            uploadTime:"2019-04-28",
+            shareState:1//0为不共享，1为共享
+          },{
+            id:"2",
+            fileName:"test.txt",
+            fileSize:"13.2MB",
+            uploadTime:"2019-04-28",
+            shareState:0//0为不共享，1为共享
+          },{
+            id:"3",
+            fileName:"test.txt",
+            fileSize:"13.2MB",
+            uploadTime:"2019-04-28",
+            shareState:1//0为不共享，1为共享
+          },{
+            id:"2",
+            fileName:"test.txt",
+            fileSize:"13.2MB",
+            uploadTime:"2019-04-28",
+            shareState:0//0为不共享，1为共享
+          },{
+            id:"3",
+            fileName:"test.txt",
+            fileSize:"13.2MB",
+            uploadTime:"2019-04-28",
+            shareState:0//0为不共享，1为共享
+          },],
+          checkedFiles:[],
         }
       },
       mounted() {
@@ -39,6 +88,9 @@
       methods:{
         search(){
           console.log('1');
+        },
+        onChangeFiles(){
+          console.log(this.checkedFiles);
         }
       }
     }</script>
@@ -94,5 +146,34 @@
   .el-main{
     border-left: 1px solid rgb(197,197,197);
     border-right: 1px solid rgb(197,197,197);
+  }
+  #title{
+    line-height: 3rem;
+  }
+  #title img{
+    width: 3rem;
+  }
+  #files{
+  }
+  .file{
+    line-height: 4rem;
+  }
+  .file img{
+    width: 4rem;
+  }
+
+</style>
+
+<style>
+
+  .el-checkbox{
+    display: block;
+    margin-left: 30px;
+  }
+  .el-checkbox__inner {
+    display: block;
+    line-height: 8rem;
+    float: left;
+    border-radius: 50%;
   }
 </style>
