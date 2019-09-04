@@ -91,6 +91,7 @@ public class UserController extends BaseController{
         switch (result){
             case 200:
                 modelVO.setCode(CodeEnum.SUCCESS.getCode());
+                request.getSession().setAttribute("loginUser",username);
                 modelVO.setMsg("用户登录成功");
                 break;
             case 403:
