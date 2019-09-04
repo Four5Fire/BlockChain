@@ -1,9 +1,11 @@
 package com.blockChain.controller;
 
 import com.blockChain.entity.FileEntity;
+import com.blockChain.entity.FileVO;
 import com.blockChain.entity.ModelVO;
 import com.blockChain.service.FileService;
 import com.blockChain.util.ActionUtil;
+import com.blockChain.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
@@ -22,6 +24,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -35,12 +38,41 @@ public class FileController extends BaseController {
     @ResponseBody
     public HashMap getFileByUsername(HttpServletRequest request){
 
-        ModelVO modelVO=new ModelVO();
+        //获取参数
         String username= ActionUtil.getStrParam(request,"username");
-        List<FileEntity> files=fileService.getFileListByUsername(username);
-        modelVO.setData(files);
-        modelVO.setMsg("成功获取用户文件");
+        String purview=ActionUtil.getStrParam(request,"purview");
+        List<FileEntity> files=fileService.getFileListByUsername(username,purview);
+        List<FileVO> fileOvs=new LinkedList<>();
+        for(FileEntity fileEntity:files){
+            FileVO one =new FileVO();
+            one.setId(fileEntity.getId());
+            one.setFilename(fileEntity.getFilename());
+            one.setFilesize(fileEntity.getFilesize());
+            one.setUploadTime(fileEntity.getModifyTime());
+            one.setShareState(fileEntity.getShareState());
+            fileOvs.add(one);
+        }
+        ModelVO modelVO=new ModelVO();
+        modelVO.setData(fileOvs);
+        modelVO.setMsg("共享成功");
         modelVO.setCode(200);
+        return modelVO.getResult();
+    }
+
+    @PostMapping(value = "/delete")
+    @ResponseBody
+    public HashMap deleteFile(HttpServletRequest request){
+        //获取参数
+        String username=ActionUtil.getStrParam(request,"username");
+        //fileId参数类型
+        String ids=request.getAuthType();
+        String[] fileIds=ids.split(",");
+        for (String id : fileIds){
+            fileService.delete(username,Integer.parseInt(id));
+        }
+        ModelVO modelVO=new ModelVO();
+        modelVO.setCode(200);
+        modelVO.setMsg("删除成功");
         return modelVO.getResult();
     }
 
@@ -50,11 +82,12 @@ public class FileController extends BaseController {
 
         ModelVO modelVO=new ModelVO();
         modelVO.setCode(200);
-        //获取用户明
-        String username=ActionUtil.getStrParam(request,"username");
+        //获取用参数
+        String username = ActionUtil.getStrParam(request,"username");
+        int shareState =Integer.parseInt(ActionUtil.getStrParam(request,"shareState").trim()) ;
         //获取文件
         MultipartHttpServletRequest multipartHttpServletRequest=(MultipartHttpServletRequest) request;
-        MultipartFile file=multipartHttpServletRequest.getFile("upload");
+        MultipartFile file=multipartHttpServletRequest.getFile("file");
         //获取时间
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date=new Date();
@@ -72,9 +105,25 @@ public class FileController extends BaseController {
         oneFile.setCreateTime(now);
         oneFile.setModifyTime(now);
         oneFile.setUsername(username);
+        oneFile.setShareState(shareState);
         fileService.addFile(oneFile,file);
-        modelVO.setMsg("上传成功");
+        modelVO.setMsg("文件上传成功");
 
+        return modelVO.getResult();
+    }
+
+    @PostMapping(value = "/share")
+    @ResponseBody
+    public HashMap shareFile(HttpServletRequest request){
+        //获取参数
+        String username=ActionUtil.getStrParam(request,"username");
+        String fileId=ActionUtil.getStrParam(request,"fileId");
+        if(StringUtil.isNullOrEmpty(username)){
+
+        }
+        ModelVO modelVO=new ModelVO();
+        modelVO.setCode(200);
+        modelVO.setMsg("文件共享成功");
         return modelVO.getResult();
     }
 
@@ -84,7 +133,8 @@ public class FileController extends BaseController {
 
         ModelVO modelVO=new ModelVO();
         modelVO.setCode(200);
-        String filename= ActionUtil.getStrParam(request,"filename");
+        String id= ActionUtil.getStrParam(request,"fileId");
+        String filename=fileService.getFileName(Integer.parseInt(id));
         //设置获取的文件路径（本地）
         String filepath="C:\\Users\\htj\\Desktop\\test\\"+filename;
         File file=new File(filepath);
@@ -113,6 +163,4 @@ public class FileController extends BaseController {
         }
         return modelVO.getResult();
     }
-
-
 }

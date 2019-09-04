@@ -8,11 +8,15 @@ import java.util.List;
 
 public interface FileService {
 
-    List<FileEntity> getFileListByUsername(String username);
+    List<FileEntity> getFileListByUsername(String username,String purview);
 
     void addFile(FileEntity onefile, MultipartFile file);
 
     boolean selectFile(String username,String filename);
 
     void deleteFile(File file);
+
+    void delete(String name,int fileId);
+
+    String getFileName(int fileId);
 }

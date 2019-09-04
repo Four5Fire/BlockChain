@@ -17,8 +17,21 @@ public class FileServiceImpl implements FileService {
     private FileDAO fileDAO;
 
     @Override
-    public List<FileEntity> getFileListByUsername(String username) {
-        return fileDAO.selectByUsername(username);
+    public List<FileEntity> getFileListByUsername(String username,String purview) {
+        if("own".equals(purview.trim())){
+            return fileDAO.selectByUsername(username);
+        }
+        return fileDAO.selectAllFile();
+    }
+
+    @Override
+    public String getFileName(int fileId) {
+        return fileDAO.getFileById(fileId).getFilename();
+    }
+
+    @Override
+    public void delete(String name, int fileId) {
+        fileDAO.deleteOneFile(name,fileId);
     }
 
     @Override

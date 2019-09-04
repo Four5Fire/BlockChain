@@ -10,7 +10,13 @@ public interface FileDAO {
 
     List<FileEntity> selectByUsername(String username);
 
+    List<FileEntity> selectAllFile();
+
     void insertFile(FileEntity fileEntity);
 
     FileEntity selectFileByUserAndFilename(String username,String filename);
+
+    void deleteOneFile(String name,int fileId);
+
+    FileEntity getFileById(int fileId);
 }
