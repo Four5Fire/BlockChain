@@ -12,11 +12,11 @@ public class LoginConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //注册拦截器
-        LoginInterceptor loginInterceptor=new LoginInterceptor();
-        InterceptorRegistration loginRegistry = registry.addInterceptor(loginInterceptor);
+      //  LoginInterceptor loginInterceptor=new LoginInterceptor();
+       // InterceptorRegistration loginRegistry = registry.addInterceptor(loginInterceptor);
         //拦截路径，默认拦截所有请求
-        loginRegistry.addPathPatterns("/**");
+       // loginRegistry.addPathPatterns("/**");
         //排除路径
-        loginRegistry.excludePathPatterns("/user/reset","/user/login","/user/regist");
+       // loginRegistry.excludePathPatterns("/user/reset","/user/login","/user/regist");
     }
 }

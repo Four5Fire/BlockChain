@@ -37,6 +37,7 @@ public class FileController extends BaseController {
         List<FileEntity> files=fileService.getFileListByUsername(username,purview);
         List<FileVO> fileOvs=new LinkedList<>();
         for(FileEntity fileEntity:files){
+            System.out.println(fileEntity);
             FileVO one =new FileVO();
             one.setId(fileEntity.getId());
             one.setFilename(fileEntity.getFilename());
@@ -47,7 +48,7 @@ public class FileController extends BaseController {
         }
         ModelVO modelVO=new ModelVO();
         modelVO.setData(fileOvs);
-        modelVO.setMsg("共享成功");
+        modelVO.setMsg("文件显示成功");
         modelVO.setCode(200);
         return modelVO.getResult();
     }

@@ -27,10 +27,6 @@ public class ModelVO {
         map.put("data",data);
     }
 
-    public void setResponseEntity(ResponseEntity responseEntity){
-        this.responseEntity=responseEntity;
-        map.put("responseEntity",responseEntity);
-    }
     public HashMap getResult(){
         return map;
     }

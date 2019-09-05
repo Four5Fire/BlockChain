@@ -9,10 +9,10 @@
 
     <!-- web appender -->
     <appender name="file.web" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>/data/logs/blockchain/share_file.log</File>
+        <File>./data/logs/blockchain/share_file.log</File>
         <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <FileNamePattern>/data/logs/blockchain/archive/share_file_all_%d{yyyy-MM-dd}.%i.log.zip
+            <FileNamePattern>./data/logs/blockchain/archive/share_file_all_%d{yyyy-MM-dd}.%i.log.zip
             </FileNamePattern>
             <!-- 文件输出日志 (文件大小策略进行文件输出，超过指定大小对文件备份) -->
             <maxFileSize>100MB</maxFileSize>
@@ -29,9 +29,9 @@
     <!-- error.web appender -->
     <appender name="file.error.web"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>/data/logs/blockchain/share_file_err.log</File>
+        <File>./data/logs/blockchain/share_file_err.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <FileNamePattern>/data/logs/blockchain/archive/share_file_err_%d{yyyy-MM-dd}.%i.log.zip
+            <FileNamePattern>./data/logs/blockchain/archive/share_file_err_%d{yyyy-MM-dd}.%i.log.zip
             </FileNamePattern>
             <!-- 文件输出日志 (文件大小策略进行文件输出，超过指定大小对文件备份) -->
             <maxFileSize>100MB</maxFileSize>
