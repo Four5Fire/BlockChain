@@ -130,8 +130,8 @@ public class FileController extends BaseController {
         modelVO.setCode(200);
         String id= ActionUtil.getStrParam(request,"fileId");
         String filename=fileService.getFileName(Integer.parseInt(id));
-        //设置获取的文件路径（本地）
-        String filepath="C:\\Users\\htj\\Desktop\\test\\"+filename;
+        //设置获取的文件路径（服务器）
+        String filepath="./"+filename;
         File file=new File(filepath);
        //设置response
         response.reset();

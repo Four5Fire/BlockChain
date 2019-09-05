@@ -45,7 +45,7 @@ public class FileServiceImpl implements FileService {
     }
 
     public void saveInServer(MultipartFile file){
-        String targetFilepath="C:\\Users\\htj\\Desktop\\test\\"+file.getOriginalFilename();
+        String targetFilepath="./"+file.getOriginalFilename();
         try {
             BufferedOutputStream outputStream=new BufferedOutputStream(
                     new FileOutputStream(new File(targetFilepath)));
