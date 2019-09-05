@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <el-row class="header">
-      <el-col :offset="1" :span="2"><img src="../../static/logo.png" /></el-col>
-      <el-col :offset="4" :span="10">
+      <el-col :span="2"><img src="../../static/logo.png" /></el-col>
+      <el-col :offset="5" :span="10">
         <el-input v-model="filename" placeholder="请输入文件名">
           <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
         </el-input>
@@ -106,15 +106,15 @@
     background-color: rgb(37,56,114);
   }
   .header img{
-    width: 6rem;
+    width: 5.5rem;
+    margin-top:1.5rem;
+    margin-left: 6.4rem;
   }
   .header .el-input{
     margin-top: 2rem;
   }
 
-  .el-aside{
-    width: 200px;
-  }
+
   .el-aside img{
     width: 6rem;
     margin: 0 auto;
@@ -123,6 +123,7 @@
   }
   #name{
     margin: 0 auto;
+    margin-top:10px;
     text-align: center;
   }
   #square{
@@ -156,6 +157,7 @@
   #files{
   }
   .file{
+    width: 100%;
     line-height: 4rem;
   }
   .file img{
@@ -167,13 +169,19 @@
 <style>
 
   .el-checkbox{
-    display: block;
+    /*display: block;*/
     margin-left: 30px;
+    display: flex;
+  }
+  .el-checkbox__input{
+    vertical-align: middle;
+    display: table-cell;
+
   }
   .el-checkbox__inner {
-    display: block;
-    line-height: 8rem;
-    float: left;
     border-radius: 50%;
+  }
+  .el-checkbox__label {
+    width: 100%;
   }
 </style>
