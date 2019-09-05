@@ -34,7 +34,7 @@ public class UserController extends BaseController{
         ModelVO modelVO = new ModelVO();
         String username = ActionUtil.getStrParam(request,"username");
         String password = ActionUtil.getStrParam(request,"password");
-        String email = ActionUtil.getStrParam(request,"emailAdress");
+        String email = ActionUtil.getStrParam(request,"emailAddress");
         String sex = ActionUtil.getStrParam(request,"sex");
         String grade = ActionUtil.getStrParam(request,"grade");
         System.out.println(email);
