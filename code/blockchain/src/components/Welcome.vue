@@ -55,139 +55,162 @@
 
 <script>
   import * as axios from "axios";
-  const URL='';
+  import qs from 'qs';
+  const URL='http://playcall.cn:8687/qingqingshare/user/';
   export default {
     name: "welcome",
     data() {
       return {
         logi: true,
-        regi:true,
-        rese:true,
+        regi: true,
+        rese: true,
         type: '',//login,register,reset
 
-        name:'',
-        mail:'',
-        pswd:'',
-        pswd2:'',
-        sex:'',
-        grade:''
+        name: '',
+        mail: '',
+        pswd: '',
+        pswd2: '',
+        sex: '',
+        grade: ''
       }
     },
     mounted() {
-      this.type='login';
+      this.type = 'login';
     },
     methods: {
       change: function (param) {
-        this.name=this.mail=this.pswd=this.pswd2='';
-        switch (this.type){
-          case 'login':this.logi=false;break;
-          case 'register':this.regi=false;break;
-          case 'reset':this.rese=false;break;
-          default:break;
+        this.name = this.mail = this.pswd = this.pswd2 = '';
+        switch (this.type) {
+          case 'login':
+            this.logi = false;
+            break;
+          case 'register':
+            this.regi = false;
+            break;
+          case 'reset':
+            this.rese = false;
+            break;
+          default:
+            break;
         }
         this.type = param;
       },
 
       login: function () {
-        if(this.name===''){
+        if (this.name === '') {
           this.$message.error('请输入用户名');
-        }else if(this.pswd===''){
+        } else if (this.pswd === '') {
           this.$message.error('请输入密码');
-        }else {
-          //   axios({
-          //     method: 'post',
-          //     url: URL+'login',
-          //     data:{
-          //       "username":this.name,
-          //       "password":this.pswd,
-          //     }
-          //   }).then((res) => {
-          this.$message.success('登录成功');
-          this.$router.push({
-            path: '/file',
-            query:{
-              "username":this.name
+        } else {
+          axios({
+            method: 'post',
+            url: URL + 'login',
+            data: {
+              "username": this.name,
+              "password": this.pswd,
             },
+            headers:{
+              'Content-Type':'application/x-www-form-urlencoded'
+            },
+          }).then((res) => {
+            console.log(res);
+            if(res.code==='200') {
+              this.$message.success('登录成功');
+              this.$router.push({
+                path: '/file',
+                query: {
+                  "username": this.name
+                },
+              });
+            }else{
+              this.$message.error(res.data.msg);
+            }
+          }).catch((err) => {
+            console.log(err);
+            this.$message.error(err.toString());
           });
-          //   }).catch((err)=>{
-          //     console.log(err);
-          //     this.$message.error(err.msg);
-          //   });
         }
       },
 
-      register:function(){
+      register: function () {
         console.log(this.sex);
         console.log(this.grade);
         const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-        if(this.name===''||this.name.length<4||this.name.length>10){
+        if (this.name === '' || this.name.length < 4 || this.name.length > 10) {
           this.$message.error('请输入长度为4-10的用户名');
-        }else if(this.mail===''||reg.test(this.mail)){
+        } else if (this.mail === '' || !reg.test(this.mail)) {
           this.$message.error('请输入正确格式的邮箱');
-        }else if(this.pswd===''||this.pswd.length<8||this.pswd.length>16){
+        } else if (this.pswd === '' || this.pswd.length < 8 || this.pswd.length > 16) {
           this.$message.error('请输入长度为8-16的密码');
-        }else if(this.pswd!==this.pswd2) {
+        } else if (this.pswd !== this.pswd2) {
           this.$message.error('两次输入密码不一致');
-        }else if(this.sex===''){
+        } else if (this.sex === '') {
           this.$message.error('请选择性别');
-        }else if(this.grade===''){
+        } else if (this.grade === '') {
           this.$message.error('请选择年级');
-        }else {
-          // axios({
-          //   method: 'post',
-          //   url: URL + 'regist',
-          //   data: {
-          //     "username": this.name,
-          //     "password": this.pswd,
-          //     "emailAddress": this.mail,
-          //     "sex":this.sex,
-          //     "grade":this.grade,
-          //   }
-          // }).then((res) => {
-          //   console.log(res);
-          //   if (res.code === '200') {
+        } else {
+          const data={
+            "username": this.name,
+            "password": this.pswd,
+            "emailAddress": this.mail,
+            "sex": this.sex,
+            "grade": this.grade,
+          };
+          axios({
+            method: 'post',
+            url: URL + 'regist',
+            data: qs.stringify(data),
+            headers:{
+              'Content-Type':'multipart/form-data',
+            },
+            header:
+              'Access-Control-Allow-Origin:*',
+
+          }).then((res) => {
+            console.log(res);
+            if (res.code === '200') {
               this.$message.success('注册成功');
               this.login();
-        //     } else {
-        //       this.$message.error(res.msg);
-        //     }
-        //   }).catch((err) => {
-        //     console.log(err);
-        //     this.$message.error(err.msg);
-        //   });
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          }).catch((err) => {
+            console.log(err);
+            this.$message.error(err.toString());
+          });
         }
       },
 
-      reset:function () {
-        if(this.name===''){
+      reset: function () {
+        if (this.name === '') {
           this.$message.error('请输入用户名');
-        }else if(this.mail===''){
+        } else if (this.mail === '') {
           this.$message.error('请输入邮箱');
-        }else if(this.pswd===''||this.pswd.length<8||this.pswd.length>16){
+        } else if (this.pswd === '' || this.pswd.length < 8 || this.pswd.length > 16) {
           this.$message.error('请输入长度为8-16的密码');
-        }else if(this.pswd!==this.pswd2) {
+        } else if (this.pswd !== this.pswd2) {
           this.$message.error('两次输入密码不一致');
-        }else {
-          //   axios({
-          //     method: 'post',
-          //     url: URL + 'regist',
-          //     data: {
-          //       "username": this.name,
-          //       "emailAddress":this.mail,
-          //       "password": this.pswd,
-          //     }
-          //   }).then((res) => {
-          //     console.log(res);
-          //     if(res.code==='200') {
-          this.$message.success('密码重置成功');
-          this.login();
-          //     }else{
-          //       this.$message.error(res.msg);
-          //     }
-          //   }).catch((err) => {
-          //     console.log(err);
-          //     this.$message.error(err.msg);
-          //   });
+        } else {
+          axios({
+            method: 'post',
+            url: URL + 'regist',
+            data: {
+              "username": this.name,
+              "emailAddress": this.mail,
+              "password": this.pswd,
+            }
+          }).then((res) => {
+            console.log(res);
+            if (res.code === '200') {
+              this.$message.success('密码重置成功');
+              this.login();
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          }).catch((err) => {
+            console.log(err);
+            this.$message.error(err.toString());
+          });
         }
       }
     }
