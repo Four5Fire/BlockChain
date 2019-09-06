@@ -1,6 +1,6 @@
-package co.junwei;
+package com.blockChain.Cipher;
 
-import co.junwei.cpabe.Cpabe;
+import com.blockChain.Cipher.cpabe.Cpabe;
 
 public class Encrypt {
     public static void main(String[] args) throws Exception {

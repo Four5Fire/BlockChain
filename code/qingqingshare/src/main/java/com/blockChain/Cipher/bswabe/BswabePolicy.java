@@ -1,4 +1,4 @@
-package co.junwei.bswabe;
+package com.blockChain.Cipher.bswabe;
 
 import java.util.ArrayList;
 

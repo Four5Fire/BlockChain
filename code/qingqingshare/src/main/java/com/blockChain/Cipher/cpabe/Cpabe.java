@@ -1,18 +1,18 @@
-package co.junwei.cpabe;
-import co.junwei.cpabe.policy.LangPolicy;
+package com.blockChain.Cipher.cpabe;
+import com.blockChain.Cipher.cpabe.policy.LangPolicy;
 import it.unisa.dia.gas.jpbc.Element;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import co.junwei.bswabe.Bswabe;
-import co.junwei.bswabe.BswabeCph;
-import co.junwei.bswabe.BswabeCphKey;
-import co.junwei.bswabe.BswabeElementBoolean;
-import co.junwei.bswabe.BswabeMsk;
-import co.junwei.bswabe.BswabePrv;
-import co.junwei.bswabe.BswabePub;
-import co.junwei.bswabe.SerializeUtils;
+import com.blockChain.Cipher.bswabe.Bswabe;
+import com.blockChain.Cipher.bswabe.BswabeCph;
+import com.blockChain.Cipher.bswabe.BswabeCphKey;
+import com.blockChain.Cipher.bswabe.BswabeElementBoolean;
+import com.blockChain.Cipher.bswabe.BswabeMsk;
+import com.blockChain.Cipher.bswabe.BswabePrv;
+import com.blockChain.Cipher.bswabe.BswabePub;
+import com.blockChain.Cipher.bswabe.SerializeUtils;
 
 public class Cpabe {
 

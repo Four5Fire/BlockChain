@@ -1,6 +1,6 @@
-package co.junwei.AES;
+package com.blockChain.Cipher.AES;
 
-import co.junwei.cpabe.Common;
+import com.blockChain.Cipher.cpabe.Common;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
