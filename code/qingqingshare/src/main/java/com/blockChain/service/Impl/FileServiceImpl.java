@@ -3,15 +3,20 @@ package com.blockChain.service.Impl;
 import com.blockChain.dao.FileDAO;
 import com.blockChain.entity.FileEntity;
 import com.blockChain.service.FileService;
+import com.blockChain.util.IPFSUtils;
+import io.ipfs.api.IPFS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class FileServiceImpl implements FileService {
+
+    HashMap<String,String> hashMap=new HashMap<>();//文件 hash数值
 
     @Autowired
     private FileDAO fileDAO;
@@ -44,7 +49,17 @@ public class FileServiceImpl implements FileService {
         fileDAO.insertFile(onefile);
     }
 
+
+    @Override
+    public FileEntity queryFileByName(String filename) {
+        return fileDAO.queryFileByName(filename);
+    }
+
     public void saveInServer(MultipartFile file){
+        //将文件写入IPFS，并保存hash数值
+        String hash= IPFSUtils.addFile((File) file);
+        hashMap.put(file.getOriginalFilename(),hash);
+        //保存在服务器
         String targetFilepath="./"+file.getOriginalFilename();
         try {
             BufferedOutputStream outputStream=new BufferedOutputStream(
@@ -67,5 +82,13 @@ public class FileServiceImpl implements FileService {
 
     public void deleteFile(File file){
         if(file.exists()) file.delete();
+    }
+
+    public byte[] getFile(String filename){
+        String hashkey=hashMap.get(filename);
+        if(hashkey==null){
+            return null;
+        }
+        return IPFSUtils.getFile(hashkey);
     }
 }

@@ -19,4 +19,9 @@ public interface FileService {
     void delete(String name,int fileId);
 
     String getFileName(int fileId);
+
+    FileEntity queryFileByName(String filename);
+
+    byte[] getFile(String filename);
+
 }

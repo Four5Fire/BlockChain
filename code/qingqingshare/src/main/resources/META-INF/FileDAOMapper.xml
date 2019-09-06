@@ -34,6 +34,10 @@
         select * from  file_info where id=#{fileId}
     </select>
 
+    <select id="queryFileByName" resultType="com.blockChain.entity.FileEntity">
+        select * from file_info where filename=#{filename};
+    </select>
+
     <insert id="insertFile">
         insert into file_info(filename,username,filesize,create_time,modify_time) values (#{filename,jdbcType=VARCHAR}
         ,#{username,jdbcType=VARCHAR},#{filesize,jdbcType=VARCHAR} ,

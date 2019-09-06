@@ -31,10 +31,9 @@ public class IPFSUtils {
         return addResult.hash.toString();
     }
 
-    public static byte[] getFile(){
+    public static byte[] getFile(String hashkey){
         byte[] fileContent=null;
         try {
-            String hashkey="";//getHashKey();此处交给服务端完成，服务端与区块链交互拿到相应的hash值
             fileContent = ipfs.get(Multihash.fromBase58(hashkey));
         } catch (IOException e) {
             e.printStackTrace();
