@@ -21,7 +21,24 @@
         </repository>
     </repositories>
 
+
     <dependencies>
+
+        <dependency>
+            <groupId>it.unisa.dia.gas</groupId>
+            <artifactId>jpbc-api</artifactId>
+            <version>1.2.1</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/lib/jpbc-api-1.2.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>it.unisa.dia.gas</groupId>
+            <artifactId>jpbc-plaf</artifactId>
+            <version>1.2.1</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/lib/jpbc-plaf-1.2.1.jar</systemPath>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
