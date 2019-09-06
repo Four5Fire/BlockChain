@@ -14,7 +14,7 @@ public interface FileService {
 
     boolean selectFile(String username,String filename);
 
-    void deleteFile(File file);
+    void deleteFile(String filepath);
 
     void delete(String name,int fileId);
 

@@ -10,20 +10,12 @@ import java.io.IOException;
 
 public class IPFSUtils {
     //初始化ipfs实例
-    static IPFS ipfs=null;
-    static {
-        try {
-            ipfs=new IPFS("/ip4/127.0.0.1/tcp/5001");
-            ipfs.refs.local();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    static IPFS ipfs=new IPFS("/ip4/39.106.190.132/tcp/5001");
 
-    public static String addFile(File file){
+    public static String addFile(String filepath){
         MerkleNode addResult=null;
         try {
-            NamedStreamable.FileWrapper fileWrapper=new NamedStreamable.FileWrapper(file);
+            NamedStreamable.FileWrapper fileWrapper=new NamedStreamable.FileWrapper(new File(filepath));
             addResult = ipfs.add(fileWrapper).get(0);
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,7 +26,7 @@ public class IPFSUtils {
     public static byte[] getFile(String hashkey){
         byte[] fileContent=null;
         try {
-            fileContent = ipfs.get(Multihash.fromBase58(hashkey));
+            fileContent = ipfs.cat(Multihash.fromBase58(hashkey));
         } catch (IOException e) {
             e.printStackTrace();
         }

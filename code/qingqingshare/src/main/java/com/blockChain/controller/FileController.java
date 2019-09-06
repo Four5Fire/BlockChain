@@ -5,9 +5,9 @@ import com.blockChain.entity.FileVO;
 import com.blockChain.entity.ModelVO;
 import com.blockChain.service.FileService;
 import com.blockChain.util.ActionUtil;
-import com.blockChain.util.IPFSUtils;
 import com.blockChain.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -74,14 +74,14 @@ public class FileController extends BaseController {
     }
 
     @RequestMapping(value = "/upload",method = RequestMethod.PUT)
-    @ResponseBody
     public HashMap loadFile(HttpServletRequest request){
 
         ModelVO modelVO=new ModelVO();
         modelVO.setCode(200);
         //获取用参数
         String username = ActionUtil.getStrParam(request,"username");
-        int shareState =Integer.parseInt(ActionUtil.getStrParam(request,"shareState").trim()) ;
+        int shareState =Integer.parseInt(ActionUtil.getStrParam(request,"shareState").trim());
+
         //获取文件
         MultipartHttpServletRequest multipartHttpServletRequest=(MultipartHttpServletRequest) request;
         MultipartFile file=multipartHttpServletRequest.getFile("file");
@@ -97,14 +97,6 @@ public class FileController extends BaseController {
             modelVO.setCode(400);
             return modelVO.getResult();
         }
-        oneFile.setFilename(filename);
-        oneFile.setFilesize(file.getSize()+"B");
-        oneFile.setCreateTime(now);
-        oneFile.setModifyTime(now);
-        oneFile.setUsername(username);
-        oneFile.setShareState(shareState);
-        fileService.addFile(oneFile,file);
-        modelVO.setMsg("文件上传成功");
         //存储文件标签
         String[] tags=ActionUtil.getStrParam(request,"tags").split(",");
         for (String tag:tags){
@@ -118,12 +110,20 @@ public class FileController extends BaseController {
                 list.add(filename);
             }
         }
+        oneFile.setFilename(filename);
+        oneFile.setFilesize(file.getSize()+"B");
+        oneFile.setCreateTime(now);
+        oneFile.setModifyTime(now);
+        oneFile.setUsername(username);
+        oneFile.setShareState(shareState);
+        fileService.addFile(oneFile,file);
+        modelVO.setMsg("文件上传成功");
+
         return modelVO.getResult();
     }
 
     @Deprecated
     @PostMapping(value = "/share")
-    @ResponseBody
     public HashMap shareFile(HttpServletRequest request){
         //获取参数
         String username=ActionUtil.getStrParam(request,"username");
@@ -138,17 +138,17 @@ public class FileController extends BaseController {
     }
 
     @RequestMapping(value = "/download" ,method = RequestMethod.POST)
-    @ResponseBody
-    public HashMap downloadFile(HttpServletRequest request,HttpServletResponse response) {
+    public void downloadFile(HttpServletRequest request,HttpServletResponse response) {
 
         ModelVO modelVO=new ModelVO();
         modelVO.setCode(200);
         String id= ActionUtil.getStrParam(request,"fileId");
         String filename=fileService.getFileName(Integer.parseInt(id));
-        /*设置获取的文件路径（服务器）
+
+        //设置获取的文件路径（服务器）
         String filepath="./"+filename;
         File file=new File(filepath);
-        */
+
         //从ipfs获取文件
         byte[] fileBytes= fileService.getFile(filename);
        //设置response
@@ -156,16 +156,22 @@ public class FileController extends BaseController {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/octet-stream");
         response.setContentLength(fileBytes.length);
-        response.setHeader("Content-Disposition", "attachment;fileName=" + filename);
-        /*设置返回信息
-        try {
-            byte[] buffer=new byte[10*1024];
+
+        //通过服务器返回文件的位置信息
+        /*try {
+            response.setHeader("Content-Disposition", "attachment;fileName=" +
+                    new String(filename.getBytes("utf-8"),"ISO-8859-1"));
+            byte[] buffer=new byte[1024];
             BufferedInputStream inputStream=new BufferedInputStream(
                     new FileInputStream(file));
             OutputStream outputStream=response.getOutputStream();
-            while (inputStream.read(buffer)!=-1){
-                outputStream.write(buffer);
+            int i=inputStream.read(buffer);
+            while (i!=-1){
+                System.out.println(new String(buffer,"utf-8"));
+                outputStream.write(buffer,0,i);
+                i=inputStream.read(buffer);
             }
+            outputStream.flush();
             outputStream.close();
             inputStream.close();
             modelVO.setMsg("文件下载成功");
@@ -181,11 +187,9 @@ public class FileController extends BaseController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return modelVO.getResult();
     }
 
     @PostMapping(value = "/query" )
-    @ResponseBody
     public HashMap query(HttpServletRequest request){
         ModelVO modelVO=new ModelVO();
         String keyword=ActionUtil.getStrParam(request,"keyword");

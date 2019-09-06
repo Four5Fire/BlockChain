@@ -9,7 +9,6 @@ public class ModelVO {
     private int code;
     private String msg;
     private List data;
-    private ResponseEntity responseEntity;
     private HashMap map = new HashMap();
 
     public void setCode(int code){

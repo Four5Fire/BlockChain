@@ -4,7 +4,6 @@ import com.blockChain.dao.FileDAO;
 import com.blockChain.entity.FileEntity;
 import com.blockChain.service.FileService;
 import com.blockChain.util.IPFSUtils;
-import io.ipfs.api.IPFS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,9 +55,6 @@ public class FileServiceImpl implements FileService {
     }
 
     public void saveInServer(MultipartFile file){
-        //将文件写入IPFS，并保存hash数值
-        String hash= IPFSUtils.addFile((File) file);
-        hashMap.put(file.getOriginalFilename(),hash);
         //保存在服务器
         String targetFilepath="./"+file.getOriginalFilename();
         try {
@@ -72,6 +68,11 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //将文件写入IPFS，并保存hash数值
+        String hash= IPFSUtils.addFile(targetFilepath);
+        System.out.println(hash);
+        hashMap.put(file.getOriginalFilename(),hash);
+        deleteFile(targetFilepath);
     }
 
     public boolean selectFile(String username,String filename){
@@ -80,7 +81,8 @@ public class FileServiceImpl implements FileService {
         return true;
     }
 
-    public void deleteFile(File file){
+    public void deleteFile(String filepath){
+        File file=new File(filepath);
         if(file.exists()) file.delete();
     }
 
