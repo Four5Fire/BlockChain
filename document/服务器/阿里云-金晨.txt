@@ -1,0 +1,4 @@
+ip:140.143.78.135
+ssh-port:22
+username:root
+password:asdfghjkl@123
