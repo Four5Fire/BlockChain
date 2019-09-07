@@ -3,15 +3,15 @@
     <el-row class="header">
       <el-col :span="2"><img src="../../static/logo.png" /></el-col>
       <el-col :offset="5" :span="10">
-        <el-input v-model="filename" placeholder="请输入文件名">
-          <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+        <el-input v-model="keyword" placeholder="请输入文件名">
+          <el-button slot="append" icon="el-icon-search" @click="searchFile"></el-button>
         </el-input>
       </el-col>
     </el-row>
     <el-container>
       <el-aside>
         <img src="../../static/avatar.png" />
-        <div id="name">{{username}}</div>
+        <div class="name">{{username}}</div>
         <div id="navs">
           <Nav label="我的文件" :isSelected="sel1" @setSelected="loadFile('own')"></Nav>
           <Nav label="上传文件" :isSelected="sel2" @setSelected="update"></Nav>
@@ -19,27 +19,80 @@
         </div>
       </el-aside>
       <el-main>
-        <div id="title"><img src="../../static/home.png"/>文件列表</div>
-        <div id="files">
-          <el-checkbox-group v-model="checkedFiles" @change="onChangeFiles">
-            <el-checkbox v-for="item in files" :label="item.id" :key="item.id">
-              <el-row class="file">
-                <el-col :span="3"><img src="../../static/file.png"/></el-col>
-                <el-col :span="3">{{item.fileName}}</el-col>
-                <el-col :span="3">{{item.fileSize}}</el-col>
-                <el-col :span="3">{{item.uploadTime}}</el-col>
-                <el-col :span="3">
-                  <div v-if="item.shareState===0">已共享</div>
-                  <img style="width: 3rem" src="../../static/share.png" v-else />
+        <div v-if="sel2">
+          <el-row class="up">
+            <el-col :span="4">请输入标签：</el-col>
+            <el-col :span="20"><el-input v-model="tags" placeholder="标签间以“,”分隔"></el-input></el-col>
+          </el-row>
+          <el-row class="up">
+            <el-col :span="4">共享状态：</el-col>
+            <el-col :span="20">
+              <el-radio-group v-model="shareState">
+                <el-radio-button label="1" border>共享</el-radio-button>
+                <el-radio-button label="0" border>不共享</el-radio-button>
+              </el-radio-group>
+            </el-col>
+          </el-row>
+          <el-row class="up">
+            <el-col :span="4">选择文件：</el-col>
+            <el-col :span="20">
+              <el-upload
+                class="upload-demo"
+                :before-upload="realUpload"
+                drag
+                action="suibianxieyige">
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              </el-upload>
+            </el-col>
+          </el-row>
+        </div>
+        <div v-else>
+          <div id="title"><img :src="titlesrc"/>{{title}}</div>
+          <div id="files">
+            <div class="file" @click="funcfile(item)" v-for="item in files" :label="item.id" :key="item.id">
+              <el-row>
+                <el-col :span="1" :offset="1"><img src="../../static/file.png"/></el-col>
+                <el-col :span="5" class="file-info">{{item.fileName}}</el-col>
+                <el-col :span="5" class="file-info">{{item.fileSize}}</el-col>
+                <el-col :span="5" class="file-info">{{item.uploadTime}}</el-col>
+                <el-col :span="5" class="file-info" v-if="sel1">
+                  <div v-if="item.shareState===1" style="color: #606266;">已共享</div>
+                  <img v-else src="../../static/share.png" @click="share" />
                 </el-col>
               </el-row>
-            </el-checkbox>
-          </el-checkbox-group>
+            </div>
+          </div>
+          <div id="btns" v-if="showBtn">
+            <el-button type="primary" @click="del">删除</el-button>
+            <el-button type="primary" @click="download">下载</el-button>
+          </div>
         </div>
-
       </el-main>
-      <el-aside>
-        aa
+      <el-aside v-if="showShare" style="font-size: 14px;">
+        <img src="../../static/sharefile.png" />
+        <div class="share">{{file.fileName}}</div>
+        <div class="share">{{file.fileSize}}</div>
+        <div class="share">{{file.uploadTime}}</div>
+        <template>
+          <el-select
+            v-model="searUser"
+            multiple
+            filterable
+            remote
+            reserve-keyword
+            placeholder="请输入用户名"
+            :remote-method="remoteMethod"
+            :loading="loading">
+            <el-option
+              v-for="item in Users"
+              :key="item.username"
+              :label="item.username"
+              :value="item.username">
+            </el-option>
+          </el-select>
+        </template>
+        <el-button type="primary">公开分享</el-button>
       </el-aside>
     </el-container>
   </div>
@@ -54,10 +107,18 @@
       data(){
         return {
           username: '',
+          keyword:'',
+          searUser:'',
+
           sel1:false,
           sel2:false,
           sel3:false,
-          filename:'',
+          shareState:-1,
+          tags:'',
+
+          title:'',
+          titlesrc:'',
+
           files:[{
             id:"1",
             fileName:"test.txt",
@@ -89,32 +150,94 @@
             uploadTime:"2019-04-28",
             shareState:0//0为不共享，1为共享
           },],
-          checkedFiles:[],
+          showShare:false,
+          showBtn:false,
+          file:{},
         }
       },
       mounted() {
         this.username = this.$route.query.username;
         this.loadFile("own");
-        this.sel1=true;
       },
       methods:{
-        search(){
-          console.log('1');
+        searchFile(){
+          // axios({
+          //   method: 'post',
+          //   url: URL + 'query',
+          //   data: {
+          //     "keyword": this.keyword,
+          //   },
+          //   headers:{
+          //     'Content-Type':'application/x-www-form-urlencoded'
+          //   },
+          // }).then((res) => {
+          //   console.log(res);
+          //   if(res.code==='200') {
+          //     this.$message.success('查询成功');
+              this.sel1=false;
+              this.sel2=false;
+              this.sel3=true;
+              this.showShare=false;
+              // this.files=res.data.files;
+          //   }else{
+          //     this.$message.error(res.data.msg);
+          //   }
+          // }).catch((err) => {
+          //   console.log(err);
+          //   this.$message.error(err.toString());
+          // });
         },
+
         update(){
-          console.log('update');
           this.sel1=false;
           this.sel2=true;
           this.sel3=false;
+          this.showShare=false;
+          this.showBtn=false;
         },
-        onChangeFiles(){
-          console.log(this.checkedFiles);
+
+        realUpload(file) {
+          if(this.shareState===-1){
+            this.$message.error('请先选择上传状态');
+          }else if(this.tags===''){
+            this.$message.error('请先为文件填写标签');
+          }else {
+            // let fd = new FormData();
+            // let url = URL + 'upload';
+            // fd.append('username', this.username);
+            // fd.append('file', file);
+            // fd.append('shareState', this.shareState);
+            // fd.append('tags', this.tags);
+            // axios.post(url, fd).then((res) => {
+            //   console.log(res);
+            //   if (res.code === '200') {
+                this.$message.success("上传成功");
+            //   } else {
+            //     this.$message.error(res.data.msg);
+            //   }
+            // }).catch((err) => {
+            //   console.log(err);
+            //   this.$message.error(err.toString());
+            // });
+          }
         },
+
         loadFile(param){
-          console.log("this.sel1:"+this.sel1);
-          console.log("this.sel2:"+this.sel2);
-          console.log("this.sel3:"+this.sel3);
-          console.log(param);
+          this.showBtn=false;
+          if(param==='own'){
+            this.sel1=true;
+            this.sel2=false;
+            this.sel3=false;
+            this.title="文件列表";
+            this.titlesrc="../../static/home.png";
+          }else{
+            this.sel1=false;
+            this.sel2=false;
+            this.sel3=true;
+            this.title="查询结果";
+            this.titlesrc="../../static/search.png";
+            this.showShare=false;
+          }
           // axios({
           //   method: 'post',
           //   url: URL + 'showfile',
@@ -136,16 +259,102 @@
           //   console.log(err);
           //   this.$message.error(err.toString());
           // });
-          if(param==='own'){
-            this.sel1=true;
-            this.sel2=false;
-            this.sel3=false;
-          }else{
-            this.sel1=false;
-            this.sel2=false;
-            this.sel3=true;
+        },
+
+        funcfile(param) {
+          this.file=param;
+          if (this.sel1 && param.shareState===1) {
+              this.showBtn = true;
+              this.showShare=false;
+
+          } else if(this.sel3) {
+            this.download();
           }
-        }
+        },
+
+        del(){
+          this.$confirm('是否要删除文件' + this.file.fileName, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+          }).then(() => {
+            // axios({
+            //   method: 'post',
+            //   url: URL + 'delete',
+            //   data: {
+            //     "username": this.username,
+            //     "fileId": this.file.id,
+            //   },
+            //   headers: {
+            //     'Content-Type': 'application/x-www-form-urlencoded'
+            //   },
+            // }).then((res) => {
+            //   console.log(res);
+            //   if (res.code === '200') {
+            this.$message.success('删除成功');
+            this.showBtn=false;
+            this.sel1=false;
+            this.sel1=true;
+            //     } else {
+            //       this.$message.error(res.data.msg);
+            //     }
+            //   }).catch((err) => {
+            //     console.log(err);
+            //     this.$message.error(err.toString());
+          }).catch(() => {});
+        },
+
+        download(){
+          this.$confirm('是否要下载文件' + this.file.fileName, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+          }).then(() => {
+            // axios({
+            //   method: 'post',
+            //   url: URL + 'download',
+            //   data: {
+            //     "username": this.username,
+            //     "fileId": this.file.id,,
+            //   },
+            //   headers: {
+            //     'Content-Type': 'application/x-www-form-urlencoded'
+            //   },
+            // }).then((res) => {
+            //   console.log(res);
+            //   if (res.code === '200') {
+            this.$message.success('下载成功');
+            this.showBtn=false;
+            //     } else {
+            //       this.$message.error(res.data.msg);
+            //     }
+            //   }).catch((err) => {
+            //     console.log(err);
+            //     this.$message.error(err.toString());
+          }).catch(() => {});
+        },
+
+        share(){
+          this.showShare = true;
+          this.showBtn=false;
+        },
+
+        remoteMethod(query) {
+          if (query !== '') {
+            this.loading = true;
+            setTimeout(() => {
+              this.loading = false;
+              this.options = this.list.filter(item => {
+                return item.label.toLowerCase()
+                  .indexOf(query.toLowerCase()) > -1;
+              });
+            }, 200);
+          } else {
+            this.options = [];
+          }
+        },
+
+        openShare(){},
+
+
       }
     }</script>
 
@@ -168,20 +377,29 @@
     margin-top: 2rem;
   }
 
-
   .el-aside img{
     width: 6rem;
     margin: 0 auto;
     display: block;
-    margin-top: 7rem;
+    margin-top: 5rem;
+    margin-bottom: 10px;
   }
-  #name{
+  .name{
     margin: 0 auto;
-    margin-top:10px;
     text-align: center;
   }
   #navs{
     margin-top: 80px;
+  }
+
+  .up{
+    line-height: 40px;
+    font-size: 14px;
+    color: #606266;
+    margin-top: 20px;
+  }
+  .el-icon-upload{
+    margin-top:120px;
   }
 
   .el-main{
@@ -189,25 +407,53 @@
     border-right: 1px solid rgb(197,197,197);
   }
   #title{
-    line-height: 3rem;
+    line-height: 2rem;
+    color: #606266;
+    margin-bottom: 1rem;
   }
   #title img{
-    width: 3rem;
+    width: 2rem;
+    margin-right:1rem;
   }
+
   #files{
+    background-color: #f6f6f6;
+    padding: 20px;
   }
   .file{
     width: 100%;
-    line-height: 4rem;
+    line-height: 2rem;
+    margin-bottom: 5px;
+  }
+  .file :hover{
+    background-color: rgb(229,243,255);
+    cursor: pointer;
+  }
+  .file-info{
+    color: #606266;
   }
   .file img{
-    width: 4rem;
+    width: 2rem;
+  }
+  #btns{
+    margin-top: 20px;
+  }
+
+  .share{
+    margin: 0 auto;
+    text-align: center;
+    color: #606266;
+    font-size: 14px;
   }
 
 </style>
 
 <style>
-
+  .el-upload-dragger{
+    margin-top: 10px;
+    width: 300%;
+    height: 300px;
+  }
   .el-checkbox{
     /*display: block;*/
     margin-left: 30px;
@@ -216,7 +462,6 @@
   .el-checkbox__input{
     vertical-align: middle;
     display: table-cell;
-
   }
   .el-checkbox__inner {
     border-radius: 50%;
@@ -224,4 +469,6 @@
   .el-checkbox__label {
     width: 100%;
   }
+
+
 </style>
