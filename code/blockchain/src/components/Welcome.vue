@@ -102,19 +102,19 @@
         } else if (this.pswd === '') {
           this.$message.error('请输入密码');
         } else {
-          axios({
-            method: 'post',
-            url: URL + 'login',
-            data: {
-              "username": this.name,
-              "password": this.pswd,
-            },
-            headers:{
-              'Content-Type':'application/x-www-form-urlencoded'
-            },
-          }).then((res) => {
-            console.log(res);
-            if(res.code==='200') {
+          // axios({
+          //   method: 'post',
+          //   url: URL + 'login',
+          //   data: {
+          //     "username": this.name,
+          //     "password": this.pswd,
+          //   },
+          //   headers:{
+          //     'Content-Type':'application/x-www-form-urlencoded'
+          //   },
+          // }).then((res) => {
+          //   console.log(res);
+          //   if(res.code==='200') {
               this.$message.success('登录成功');
               this.$router.push({
                 path: '/file',
@@ -122,13 +122,13 @@
                   "username": this.name
                 },
               });
-            }else{
-              this.$message.error(res.data.msg);
-            }
-          }).catch((err) => {
-            console.log(err);
-            this.$message.error(err.toString());
-          });
+          //   }else{
+          //     this.$message.error(res.data.msg);
+          //   }
+          // }).catch((err) => {
+          //   console.log(err);
+          //   this.$message.error(err.toString());
+          // });
         }
       },
 
