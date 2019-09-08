@@ -288,7 +288,7 @@
 </style>
 
 <style>
-   .el-input__inner{
+   #forms .el-input__inner{
     background: rgba(0,0,0,0);
     border: 0;
     border-radius: 0;
@@ -296,7 +296,7 @@
 
   }
 
-  .el-input__inner :focus{
+   #forms .el-input__inner :focus{
     background: rgba(0,0,0,0);
   }
 </style>
