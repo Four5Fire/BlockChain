@@ -4,18 +4,16 @@ import com.blockChain.dao.FileDAO;
 import com.blockChain.entity.FileEntity;
 import com.blockChain.service.FileService;
 import com.blockChain.util.IPFSUtils;
+import com.blockChain.util.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class FileServiceImpl implements FileService {
-
-    HashMap<String,String> hashMap=new HashMap<>();//文件 hash数值
 
     @Autowired
     private FileDAO fileDAO;
@@ -71,7 +69,7 @@ public class FileServiceImpl implements FileService {
         //将文件写入IPFS，并保存hash数值
         String hash= IPFSUtils.addFile(targetFilepath);
         System.out.println(hash);
-        hashMap.put(file.getOriginalFilename(),hash);
+        MapUtils.filenameHash.put(file.getOriginalFilename(),hash);
         deleteFile(targetFilepath);
     }
 
@@ -87,7 +85,7 @@ public class FileServiceImpl implements FileService {
     }
 
     public byte[] getFile(String filename){
-        String hashkey=hashMap.get(filename);
+        String hashkey=MapUtils.filenameHash.get(filename);
         if(hashkey==null){
             return null;
         }

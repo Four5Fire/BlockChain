@@ -5,9 +5,9 @@ import com.blockChain.entity.FileVO;
 import com.blockChain.entity.ModelVO;
 import com.blockChain.service.FileService;
 import com.blockChain.util.ActionUtil;
+import com.blockChain.util.MapUtils;
 import com.blockChain.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -24,8 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/file")
 public class FileController extends BaseController {
-
-    static HashMap<String,List<String>> hashMap=new HashMap<>();//标签 文件列表
+    
 
     @Autowired
     private FileService fileService;
@@ -100,13 +99,13 @@ public class FileController extends BaseController {
         //存储文件标签
         String[] tags=ActionUtil.getStrParam(request,"tags").split(",");
         for (String tag:tags){
-            if(!hashMap.containsKey(tag)){
+            if(!MapUtils.tagsIds.containsKey(tag)){
                 LinkedList<String> list=new LinkedList<>();
                 list.add(filename);
-                hashMap.put(tag,list);
+                MapUtils.tagsIds.put(tag,list);
             }
             else {
-                List<String> list=hashMap.get(tag);
+                List<String> list=MapUtils.tagsIds.get(tag);
                 list.add(filename);
             }
         }
@@ -193,7 +192,7 @@ public class FileController extends BaseController {
     public HashMap query(HttpServletRequest request){
         ModelVO modelVO=new ModelVO();
         String keyword=ActionUtil.getStrParam(request,"keyword");
-        List<String> names=hashMap.get(keyword);
+        List<String> names=MapUtils.tagsIds.get(keyword);
         if(names==null || names.size() < 1){
             modelVO.setMsg("没有你要检索的文件");
             modelVO.setCode(201);
