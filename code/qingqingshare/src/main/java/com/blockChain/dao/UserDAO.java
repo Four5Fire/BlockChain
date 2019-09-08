@@ -21,4 +21,6 @@ public interface UserDAO {
     int updateUserPassword(@Param("username")String username, @Param("password")String password);
 
     List<UserEntity> selectUserListByUsername(@Param("username")String username,@Param("only")String only);
+
+    List<UserEntity> selectUsers();
 }

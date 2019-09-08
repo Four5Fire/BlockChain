@@ -94,6 +94,10 @@ public class UserServiceImpl implements UserService {
 
         List<UserEntity> userEntityList = null;
 
+        if ("".equals(username)){
+            userEntityList = userDAO.selectUsers();
+        }
+
         try{
             userEntityList = userDAO.selectUserListByUsername(username,only);
         }catch (Exception e){

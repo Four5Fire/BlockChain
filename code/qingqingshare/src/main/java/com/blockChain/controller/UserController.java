@@ -156,8 +156,7 @@ public class UserController extends BaseController{
         String username = ActionUtil.getStrParam(request,"username");
         String only = ActionUtil.getStrParam(request,"only");
 
-        if (StringUtil.isNullOrEmpty(username)||
-            StringUtil.isNullOrEmpty(only)){
+        if (StringUtil.isNullOrEmpty(only)){
             modelVO.setCode(CodeEnum.PARAM_MISS.getCode());
             modelVO.setMsg("参数缺省");
             logger.info("用户注册参数缺省");
