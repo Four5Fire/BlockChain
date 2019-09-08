@@ -240,7 +240,7 @@
             this.titlesrc="../../static/search.png";
             this.showShare=false;
           }
-          // return ;
+          return ;
           let data = {
             "username": this.name,
             "purview": param,
@@ -354,6 +354,7 @@
         loadAll() {
           let data = {
             "username": '',
+            only:false,
           };
           axios({
             method: 'post',
