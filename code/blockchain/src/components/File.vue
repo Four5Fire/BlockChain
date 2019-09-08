@@ -50,11 +50,12 @@
         <div v-else>
           <div id="title"><img :src="titlesrc"/>{{title}}</div>
           <div id="files">
-            <div class="file" @click="funcfile(item)" v-for="item in files" :label="item.id" :key="item.id">
+            <div v-if="files.length<1">暂无文件记录</div>
+            <div v-else class="file" @click="funcfile(item)" v-for="item in files" :label="item.id" :key="item.id">
               <el-row>
                 <el-col :span="1" :offset="1"><img src="../../static/file.png"/></el-col>
-                <el-col :span="5" class="file-info">{{item.fileName}}</el-col>
-                <el-col :span="5" class="file-info">{{item.fileSize}}</el-col>
+                <el-col :span="5" class="file-info">{{item.filename}}</el-col>
+                <el-col :span="5" class="file-info">{{item.filesize}}</el-col>
                 <el-col :span="5" class="file-info">{{item.uploadTime}}</el-col>
                 <el-col :span="5" class="file-info" v-if="sel1">
                   <div v-if="item.shareState===1" style="color: #606266;">已共享</div>
@@ -71,28 +72,19 @@
       </el-main>
       <el-aside v-if="showShare" style="font-size: 14px;">
         <img src="../../static/sharefile.png" />
-        <div class="share">{{file.fileName}}</div>
-        <div class="share">{{file.fileSize}}</div>
+        <div class="share">{{file.filename}}</div>
+        <div class="share">{{file.filesize}}</div>
         <div class="share">{{file.uploadTime}}</div>
-        <template>
-          <el-select
+        <div class="share" style="margin-top: 20px;">
+          <el-autocomplete
             v-model="searUser"
-            multiple
-            filterable
-            remote
-            reserve-keyword
+            :fetch-suggestions="querySearchAsync"
             placeholder="请输入用户名"
-            :remote-method="remoteMethod"
-            :loading="loading">
-            <el-option
-              v-for="item in Users"
-              :key="item.username"
-              :label="item.username"
-              :value="item.username">
-            </el-option>
-          </el-select>
-        </template>
-        <el-button type="primary">公开分享</el-button>
+            @select="handleSelect"
+          ></el-autocomplete>
+          <el-button slot="append" icon="el-icon-share" type="primary" @click="shareUser"></el-button>
+        </div>
+        <div class="share" style="margin-top: 20px;"><el-button type="primary" @click="shareOpen">公开分享</el-button></div>
       </el-aside>
     </el-container>
   </div>
@@ -100,6 +92,8 @@
 
 <script>
   import Nav from '../components/Nav';
+  import * as axios from 'axios';
+  import qs from 'qs';
   const URL='http://playcall.cn:8687/qingqingshare/file/';
     export default {
       name: "file",
@@ -108,7 +102,6 @@
         return {
           username: '',
           keyword:'',
-          searUser:'',
 
           sel1:false,
           sel2:false,
@@ -119,22 +112,31 @@
           title:'',
           titlesrc:'',
 
+          showShare:false,
+          showBtn:false,
+          file:{},
+
+          searUser:'',
+          realUser:'',
+          users: [],
+          timeout:  null,
+
           files:[{
             id:"1",
-            fileName:"test.txt",
-            fileSize:"13.2MB",
+            filename:"test.txt",
+            filesize:"13.2MB",
             uploadTime:"2019-04-28",
             shareState:1//0为不共享，1为共享
           },{
             id:"2",
-            fileName:"test.txt",
-            fileSize:"13.2MB",
+            filename:"test.txt",
+            filesize:"13.2MB",
             uploadTime:"2019-04-28",
             shareState:0//0为不共享，1为共享
           },{
             id:"3",
-            fileName:"test.txt",
-            fileSize:"13.2MB",
+            filename:"test.txt",
+            filesize:"13.2MB",
             uploadTime:"2019-04-28",
             shareState:1//0为不共享，1为共享
           },{
@@ -150,42 +152,41 @@
             uploadTime:"2019-04-28",
             shareState:0//0为不共享，1为共享
           },],
-          showShare:false,
-          showBtn:false,
-          file:{},
         }
       },
       mounted() {
         this.username = this.$route.query.username;
         this.loadFile("own");
+        this.loadAll();
       },
       methods:{
-        searchFile(){
-          // axios({
-          //   method: 'post',
-          //   url: URL + 'query',
-          //   data: {
-          //     "keyword": this.keyword,
-          //   },
-          //   headers:{
-          //     'Content-Type':'application/x-www-form-urlencoded'
-          //   },
-          // }).then((res) => {
-          //   console.log(res);
-          //   if(res.code===200) {
-          //     this.$message.success('查询成功');
-              this.sel1=false;
-              this.sel2=false;
-              this.sel3=true;
-              this.showShare=false;
-              // this.files=res.data.files;
-          //   }else{
-          //     this.$message.error(res.data.msg);
-          //   }
-          // }).catch((err) => {
-          //   console.log(err);
-          //   this.$message.error(err.toString());
-          // });
+        searchFile() {
+          let data =  {
+            "keyword": this.keyword,
+          };
+          axios({
+            method: 'post',
+            url: URL + 'query',
+            data:qs.stringify(data),
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+          }).then((res) => {
+            console.log(res);
+            if (res.data.code === 200) {
+              this.$message.success('查询成功');
+              this.sel1 = false;
+              this.sel2 = false;
+              this.sel3 = true;
+              this.showShare = false;
+              this.files = res.data.data;
+            } else {
+              this.$message.warning(res.data.msg);
+            }
+          }).catch((err) => {
+            console.log(err);
+            this.$message.error(err.toString());
+          });
         },
 
         update(){
@@ -197,32 +198,33 @@
         },
 
         realUpload(file) {
-          if(this.shareState===-1){
-            this.$message.error('请先选择上传状态');
-          }else if(this.tags===''){
+          if(this.tags===''){
             this.$message.error('请先为文件填写标签');
+          }else if(this.shareState===-1){
+            this.$message.error('请先选择上传状态');
           }else {
-            // let fd = new FormData();
-            // let url = URL + 'upload';
-            // fd.append('username', this.username);
-            // fd.append('file', file);
-            // fd.append('shareState', this.shareState);
-            // fd.append('tags', this.tags);
-            // axios.post(url, fd).then((res) => {
-            //   console.log(res);
-            //   if (res.code === 200) {
+            let fd = new FormData();
+            let url = URL + 'upload';
+            fd.append('username', this.username);
+            fd.append('file', file);
+            fd.append('shareState', this.shareState);
+            fd.append('tags', this.tags);
+            axios.post(url, fd).then((res) => {
+              console.log(res);
+              if (res.data.code === 200) {
                 this.$message.success("上传成功");
-            //   } else {
-            //     this.$message.error(res.data.msg);
-            //   }
-            // }).catch((err) => {
-            //   console.log(err);
-            //   this.$message.error(err.toString());
-            // });
+              } else {
+                this.$message.warning(res.data.msg);
+              }
+            }).catch((err) => {
+              console.log(err);
+              this.$message.error(err.toString());
+            });
           }
         },
 
         loadFile(param){
+          console.log(param);
           this.showBtn=false;
           if(param==='own'){
             this.sel1=true;
@@ -238,27 +240,30 @@
             this.titlesrc="../../static/search.png";
             this.showShare=false;
           }
-          // axios({
-          //   method: 'post',
-          //   url: URL + 'showfile',
-          //   data: {
-          //     "username": this.name,
-          //     "purview": param,
-          //   },
-          //   headers:{
-          //     'Content-Type':'application/x-www-form-urlencoded'
-          //   },
-          // }).then((res) => {
-          //   console.log(res);
-          //   if (res.code === 200) {
-          //     this.files = res.data.data;
-          //   } else {
-          //     this.$message.error(res.data.msg);
-          //   }
-          // }).catch((err)=>{
-          //   console.log(err);
-          //   this.$message.error(err.toString());
-          // });
+          // return ;
+          let data = {
+            "username": this.name,
+            "purview": param,
+          };
+          axios({
+            method: 'post',
+            url: URL + 'showfile',
+            data: qs.stringify(data),
+            headers:{
+              'Content-Type':'application/x-www-form-urlencoded'
+            },
+          }).then((res) => {
+            console.log(res);
+            if (res.data.code === 200) {
+              this.files = res.data.data;
+              console.log(this.files);
+            } else {
+              this.$message.warning(res.data.msg);
+            }
+          }).catch((err)=>{
+            console.log(err);
+            this.$message.error(err.toString());
+          });
         },
 
         funcfile(param) {
@@ -272,64 +277,73 @@
           }
         },
 
-        del(){
-          this.$confirm('是否要删除文件' + this.file.fileName, '提示', {
+        del() {
+          this.$confirm('是否要删除文件' + this.file.filename, '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
           }).then(() => {
-            // axios({
-            //   method: 'post',
-            //   url: URL + 'delete',
-            //   data: {
-            //     "username": this.username,
-            //     "fileId": this.file.id,
-            //   },
-            //   headers: {
-            //     'Content-Type': 'application/x-www-form-urlencoded'
-            //   },
-            // }).then((res) => {
-            //   console.log(res);
-            //   if (res.code === 200) {
-            this.$message.success('删除成功');
-            this.showBtn=false;
-            this.sel1=false;
-            this.sel1=true;
-            //     } else {
-            //       this.$message.error(res.data.msg);
-            //     }
-            //   }).catch((err) => {
-            //     console.log(err);
-            //     this.$message.error(err.toString());
-          }).catch(() => {});
+            let fileId=[];
+            fileId[0]=this.file.id;
+            let   data= {
+                "username": this.username,
+                "fileId": fileId,
+              };
+            axios({
+              method: 'post',
+              url: URL + 'delete',
+              data:qs.stringify(data),
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+            }).then((res) => {
+              console.log(res);
+              if (res.data.code === 200) {
+                this.$message.success('删除成功');
+                this.showBtn = false;
+                this.sel1 = false;
+                this.sel1 = true;
+              } else {
+                this.$message.warning(res.data.msg);
+              }
+            }).catch((err) => {
+              console.log(err);
+              this.$message.error(err.toString());
+            }).catch(() => {
+            });
+          });
         },
 
-        download(){
-          this.$confirm('是否要下载文件' + this.file.fileName, '提示', {
+        download() {
+          this.$confirm('是否要下载文件' + this.file.filename, '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
           }).then(() => {
-            // axios({
-            //   method: 'post',
-            //   url: URL + 'download',
-            //   data: {
-            //     "username": this.username,
-            //     "fileId": this.file.id,,
-            //   },
-            //   headers: {
-            //     'Content-Type': 'application/x-www-form-urlencoded'
-            //   },
-            // }).then((res) => {
-            //   console.log(res);
-            //   if (res.code === 200) {
-            this.$message.success('下载成功');
-            this.showBtn=false;
-            //     } else {
-            //       this.$message.error(res.data.msg);
-            //     }
-            //   }).catch((err) => {
-            //     console.log(err);
-            //     this.$message.error(err.toString());
-          }).catch(() => {});
+            let data = {
+              "username": this.username,
+              "fileId": this.file.id,
+            };
+            console.log(data);
+            axios({
+              method: 'post',
+              url: URL + 'download',
+              data: qs.stringify(data),
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+            }).then((res) => {
+              console.log(res);
+              if (res.data.code === 200) {
+                this.$message.success('下载成功');
+                this.showBtn = false;
+              } else {
+                this.$message.warning(res.data.msg);
+              }
+            }).catch((err) => {
+              console.log(err);
+              this.$message.error(err.toString());
+            }).catch(() => {
+            });
+          });
         },
 
         share(){
@@ -337,23 +351,64 @@
           this.showBtn=false;
         },
 
-        remoteMethod(query) {
-          if (query !== '') {
-            this.loading = true;
-            setTimeout(() => {
-              this.loading = false;
-              this.options = this.list.filter(item => {
-                return item.label.toLowerCase()
-                  .indexOf(query.toLowerCase()) > -1;
-              });
-            }, 200);
-          } else {
-            this.options = [];
-          }
+        loadAll() {
+          let data = {
+            "username": '',
+          };
+          axios({
+            method: 'post',
+            url: 'http://playcall.cn:8687/qingqingshare/user/query',
+            data: qs.stringify(data),
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+          }).then((res) => {
+            console.log(res);
+            if (res.data.code === 200) {
+              for(let i=0;i<res.data.data.length;i++) {
+                let tmp={
+                  value:res.data.data[i].username,
+                };
+                this.users[i]=tmp;
+              }
+              console.log(this.users);
+            } else {
+              this.$message.warning(res.data.msg);
+            }
+          }).catch((err) => {
+            console.log(err);
+            this.$message.error(err.toString());
+          })
         },
 
-        openShare(){},
+        querySearchAsync(queryString, cb) {
+          var users = this.users;
+          var results = queryString ? users.filter(this.createUserFilter(queryString)) : users;
 
+          clearTimeout(this.timeout);
+          this.timeout = setTimeout(() => {
+            cb(results);
+          }, 3000 * Math.random());
+        },
+        createUserFilter(queryString) {
+          return (searUser) => {
+            return (searUser.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+          };
+        },
+        handleSelect(item) {
+          this.realUser=item.value;
+        },
+
+        shareOpen(){
+        },
+
+        shareUser(){
+          if(this.realUser===this.searUser && this.realUser!==''){
+
+          }else{
+            this.$message.warning('请选择分享对象');
+          }
+        },
 
       }
     }</script>
@@ -443,7 +498,10 @@
     margin: 0 auto;
     text-align: center;
     color: #606266;
-    font-size: 14px;
+    font-size: 12px;
+  }
+  .el-select{
+    margin: ;
   }
 
 </style>
