@@ -96,6 +96,14 @@ public class UserServiceImpl implements UserService {
 
         if ("".equals(username)){
             userEntityList = userDAO.selectUsers();
+            List userVOList = new ArrayList<UserVO>();
+            for (UserEntity userEntity:userEntityList) {
+                UserVO userVO = new UserVO();
+                userVO.setUsername(userEntity.getUsername());
+                userVO.setUserPic("https://s2.ax1x.com/2019/09/01/nptJC4.jpg");
+                userVOList.add(userVO);
+            }
+            return userVOList;
         }
 
         try{
