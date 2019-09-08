@@ -12,7 +12,7 @@ public class MapUtils implements Serializable {
     public static HashMap<String,String> filenameHash=new HashMap<>();
 
     //对HashMap进行序列化操作
-    public void writeMap(Object object,String filepath){
+    public static void writeMap(Object object,String filepath){
         try {
             ObjectOutputStream objectOutputStream=new ObjectOutputStream(
                     new FileOutputStream(new File(filepath)));
@@ -23,7 +23,7 @@ public class MapUtils implements Serializable {
     }
 
     //对HashMap进行反序列化操作
-    public Object readObject(String filepath){
+    public static Object readObject(String filepath){
         ObjectInputStream  objectInputStream=null;
         Object object=null;
         try {
