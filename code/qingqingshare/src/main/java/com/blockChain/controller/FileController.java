@@ -8,6 +8,7 @@ import com.blockChain.util.ActionUtil;
 import com.blockChain.util.MapUtils;
 import com.blockChain.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -21,7 +22,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-@RestController
+@Controller
+@CrossOrigin
 @RequestMapping(value = "/file")
 public class FileController extends BaseController {
     
@@ -55,7 +57,7 @@ public class FileController extends BaseController {
         return modelVO.getResult();
     }
 
-    @PostMapping(value = "/delete")
+    @RequestMapping(value = "/delete" ,method = RequestMethod.POST)
     @ResponseBody
     public HashMap deleteFile(HttpServletRequest request){
         //获取参数
@@ -73,6 +75,7 @@ public class FileController extends BaseController {
     }
 
     @RequestMapping(value = "/upload",method = RequestMethod.PUT)
+    @ResponseBody
     public HashMap loadFile(HttpServletRequest request){
 
         ModelVO modelVO=new ModelVO();
@@ -137,6 +140,7 @@ public class FileController extends BaseController {
     }
 
     @RequestMapping(value = "/download" ,method = RequestMethod.POST)
+    @ResponseBody
     public void downloadFile(HttpServletRequest request,HttpServletResponse response) {
 
         ModelVO modelVO=new ModelVO();
@@ -188,7 +192,8 @@ public class FileController extends BaseController {
         }
     }
 
-    @PostMapping(value = "/query" )
+    @RequestMapping(value = "/query" ,method = RequestMethod.POST)
+    @ResponseBody
     public HashMap query(HttpServletRequest request){
         ModelVO modelVO=new ModelVO();
         String keyword=ActionUtil.getStrParam(request,"keyword");
