@@ -67,10 +67,9 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
         }
         //将文件写入IPFS，并保存hash数值
-        String hash= IPFSUtils.addFile(targetFilepath);
-        System.out.println(hash);
-        MapUtils.filenameHash.put(file.getOriginalFilename(),hash);
-        deleteFile(targetFilepath);
+//        String hash= IPFSUtils.addFile(targetFilepath);
+//        MapUtils.filenameHash.put(file.getOriginalFilename(),hash);
+//        deleteFile(targetFilepath);
     }
 
     public boolean selectFile(String username,String filename){

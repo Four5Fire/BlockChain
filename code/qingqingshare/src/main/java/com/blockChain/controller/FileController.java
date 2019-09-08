@@ -41,7 +41,6 @@ public class FileController extends BaseController {
         List<FileEntity> files=fileService.getFileListByUsername(username,purview);
         List<FileVO> fileOvs=new LinkedList<>();
         for(FileEntity fileEntity:files){
-            System.out.println(fileEntity);
             FileVO one =new FileVO();
             one.setId(fileEntity.getId());
             one.setFilename(fileEntity.getFilename());
@@ -153,15 +152,15 @@ public class FileController extends BaseController {
         File file=new File(filepath);
 
         //从ipfs获取文件
-        byte[] fileBytes= fileService.getFile(filename);
+       // byte[] fileBytes= fileService.getFile(filename);
        //设置response
         response.reset();
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/octet-stream");
-        response.setContentLength(fileBytes.length);
+        //response.setContentLength(fileBytes.length);
 
         //通过服务器返回文件的位置信息
-        /*try {
+        try {
             response.setHeader("Content-Disposition", "attachment;fileName=" +
                     new String(filename.getBytes("utf-8"),"ISO-8859-1"));
             byte[] buffer=new byte[1024];
@@ -170,7 +169,6 @@ public class FileController extends BaseController {
             OutputStream outputStream=response.getOutputStream();
             int i=inputStream.read(buffer);
             while (i!=-1){
-                System.out.println(new String(buffer,"utf-8"));
                 outputStream.write(buffer,0,i);
                 i=inputStream.read(buffer);
             }
@@ -182,14 +180,14 @@ public class FileController extends BaseController {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
-        try {
-            OutputStream outputStream=response.getOutputStream();
-            outputStream.write(fileBytes);
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+//        try {
+//            OutputStream outputStream=response.getOutputStream();
+//            outputStream.write(fileBytes);
+//            outputStream.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @RequestMapping(value = "/query" ,method = RequestMethod.POST)
