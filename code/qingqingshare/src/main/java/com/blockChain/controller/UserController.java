@@ -103,6 +103,7 @@ public class UserController extends BaseController{
                 modelVO.setCode(CodeEnum.USER_NOT_EXIST.getCode());
                 modelVO.setMsg("用户未注册");
                 logger.info(username+":该用户未注册");
+                break;
             default:
                 modelVO.setCode(result);
                 modelVO.setMsg("inner server error");
