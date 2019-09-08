@@ -11,7 +11,7 @@
               <div class="item"><el-input prefix-icon="el-icon-lock" v-model="pswd" placeholder="请输入密码" show-password></el-input></div>
               <div class="item" align="center"><el-button type="primary" @click="login">登录</el-button></div>
               <div class="item"><div class="link" @click="change('register')">点击注册</div></div>
-              <div class="item"><div class="link" @click="change('reset')">找回密码</div></div>
+              <div class="item"><div class="link" @click="change('reset')">忘记密码</div></div>
             </div>
           </el-collapse-transition>
         </div>
@@ -98,23 +98,24 @@
 
       login: function () {
         if (this.name === '') {
-          this.$message.error('请输入用户名');
+          this.$message.warning('请输入用户名');
         } else if (this.pswd === '') {
-          this.$message.error('请输入密码');
+          this.$message.warning('请输入密码');
         } else {
-          // axios({
-          //   method: 'post',
-          //   url: URL + 'login',
-          //   data: {
-          //     "username": this.name,
-          //     "password": this.pswd,
-          //   },
-          //   headers:{
-          //     'Content-Type':'application/x-www-form-urlencoded'
-          //   },
-          // }).then((res) => {
-          //   console.log(res);
-          //   if(res.code==='200') {
+          let data = {
+            "username": this.name,
+            "password": this.pswd,
+          };
+          axios({
+            method: 'post',
+            url: URL + 'login',
+            data: qs.stringify(data),
+            headers:{
+              'Content-Type':'application/x-www-form-urlencoded'
+            },
+          }).then((res) => {
+            console.log(res);
+            if(res.data.code===200) {
               this.$message.success('登录成功');
               this.$router.push({
                 path: '/file',
@@ -122,13 +123,13 @@
                   "username": this.name
                 },
               });
-          //   }else{
-          //     this.$message.error(res.data.msg);
-          //   }
-          // }).catch((err) => {
-          //   console.log(err);
-          //   this.$message.error(err.toString());
-          // });
+            }else{
+              this.$message.warning(res.data.msg);
+            }
+          }).catch((err) => {
+            console.log(err);
+            this.$message.error(err.toString());
+          });
         }
       },
 
@@ -137,17 +138,17 @@
         console.log(this.grade);
         const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
         if (this.name === '' || this.name.length < 4 || this.name.length > 10) {
-          this.$message.error('请输入长度为4-10的用户名');
+          this.$message.warning('请输入长度为4-10的用户名');
         } else if (this.mail === '' || !reg.test(this.mail)) {
-          this.$message.error('请输入正确格式的邮箱');
+          this.$message.warning('请输入正确格式的邮箱');
         } else if (this.pswd === '' || this.pswd.length < 8 || this.pswd.length > 16) {
-          this.$message.error('请输入长度为8-16的密码');
+          this.$message.warning('请输入长度为8-16的密码');
         } else if (this.pswd !== this.pswd2) {
-          this.$message.error('两次输入密码不一致');
+          this.$message.warning('两次输入密码不一致');
         } else if (this.sex === '') {
-          this.$message.error('请选择性别');
+          this.$message.warning('请选择性别');
         } else if (this.grade === '') {
-          this.$message.error('请选择年级');
+          this.$message.warning('请选择年级');
         } else {
           const data={
             "username": this.name,
@@ -161,18 +162,16 @@
             url: URL + 'regist',
             data: qs.stringify(data),
             headers:{
-              'Content-Type':'multipart/form-data',
+              'Content-Type':'application/x-www-form-urlencoded'
             },
-            header:
-              'Access-Control-Allow-Origin:*',
 
           }).then((res) => {
             console.log(res);
-            if (res.code === '200') {
+            if (res.data.code === 200) {
               this.$message.success('注册成功');
               this.login();
             } else {
-              this.$message.error(res.data.msg);
+              this.$message.warning(res.data.msg);
             }
           }).catch((err) => {
             console.log(err);
@@ -183,29 +182,33 @@
 
       reset: function () {
         if (this.name === '') {
-          this.$message.error('请输入用户名');
+          this.$message.warning('请输入用户名');
         } else if (this.mail === '') {
-          this.$message.error('请输入邮箱');
+          this.$message.warning('请输入邮箱');
         } else if (this.pswd === '' || this.pswd.length < 8 || this.pswd.length > 16) {
-          this.$message.error('请输入长度为8-16的密码');
+          this.$message.warning('请输入长度为8-16的密码');
         } else if (this.pswd !== this.pswd2) {
-          this.$message.error('两次输入密码不一致');
+          this.$message.warning('两次输入密码不一致');
         } else {
+          let data = {
+            "username": this.name,
+            "emailAddress": this.mail,
+            "password": this.pswd,
+          };
           axios({
             method: 'post',
-            url: URL + 'regist',
-            data: {
-              "username": this.name,
-              "emailAddress": this.mail,
-              "password": this.pswd,
+            url: URL + 'reset',
+            data: qs.stringify(data),
+            headers:{
+              'Content-Type':'application/x-www-form-urlencoded'
             }
           }).then((res) => {
             console.log(res);
-            if (res.code === '200') {
+            if (res.data.code === 200) {
               this.$message.success('密码重置成功');
               this.login();
             } else {
-              this.$message.error(res.data.msg);
+              this.$message.warning(res.data.msg);
             }
           }).catch((err) => {
             console.log(err);
@@ -285,7 +288,7 @@
 </style>
 
 <style>
-  .el-input__inner{
+   .el-input__inner{
     background: rgba(0,0,0,0);
     border: 0;
     border-radius: 0;

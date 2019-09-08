@@ -172,7 +172,7 @@
           //   },
           // }).then((res) => {
           //   console.log(res);
-          //   if(res.code==='200') {
+          //   if(res.code===200) {
           //     this.$message.success('查询成功');
               this.sel1=false;
               this.sel2=false;
@@ -210,7 +210,7 @@
             // fd.append('tags', this.tags);
             // axios.post(url, fd).then((res) => {
             //   console.log(res);
-            //   if (res.code === '200') {
+            //   if (res.code === 200) {
                 this.$message.success("上传成功");
             //   } else {
             //     this.$message.error(res.data.msg);
@@ -250,7 +250,7 @@
           //   },
           // }).then((res) => {
           //   console.log(res);
-          //   if (res.code === '200') {
+          //   if (res.code === 200) {
           //     this.files = res.data.data;
           //   } else {
           //     this.$message.error(res.data.msg);
@@ -289,7 +289,7 @@
             //   },
             // }).then((res) => {
             //   console.log(res);
-            //   if (res.code === '200') {
+            //   if (res.code === 200) {
             this.$message.success('删除成功');
             this.showBtn=false;
             this.sel1=false;
@@ -320,7 +320,7 @@
             //   },
             // }).then((res) => {
             //   console.log(res);
-            //   if (res.code === '200') {
+            //   if (res.code === 200) {
             this.$message.success('下载成功');
             this.showBtn=false;
             //     } else {
