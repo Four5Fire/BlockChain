@@ -123,15 +123,33 @@ public class FileController extends BaseController {
         return modelVO.getResult();
     }
 
-    @Deprecated
-    @PostMapping(value = "/share")
+    @RequestMapping(value = "/share",method = RequestMethod.POST)
+    @ResponseBody
     public HashMap shareFile(HttpServletRequest request){
         //获取参数
-        String username=ActionUtil.getStrParam(request,"username");
         String fileId=ActionUtil.getStrParam(request,"fileId");
-        if(StringUtil.isNullOrEmpty(username)){
+        String[] names=ActionUtil.getStrParam(request,"names").split(",");
 
+        //获取文件对象
+        FileEntity fileEntity=fileService.selectFileById(Integer.parseInt(fileId));
+
+        //获取时间
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date=new Date();
+        String now=simpleDateFormat.format(date);
+        //向数据库中进行批量的插入操作
+        FileEntity one=new FileEntity();
+        for (String name :names){
+            one.setShareState(fileEntity.getShareState());
+            one.setUsername(name);
+            one.setFilesize(fileEntity.getFilesize());
+            one.setFilename(fileEntity.getFilename());
+            one.setShareState(0);
+            one.setCreateTime(now);
+            one.setModifyTime(now);
+            fileService.addFile(one,null);
         }
+        //向前端进行展示
         ModelVO modelVO=new ModelVO();
         modelVO.setCode(200);
         modelVO.setMsg("文件共享成功");

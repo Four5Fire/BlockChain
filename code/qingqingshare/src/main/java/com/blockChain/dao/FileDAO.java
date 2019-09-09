@@ -21,4 +21,6 @@ public interface FileDAO {
     String getFileById(int fileId);
 
     FileEntity queryFileByName(String filename);
+
+    FileEntity selectFileById(int id);
 }

@@ -24,4 +24,6 @@ public interface FileService {
 
     byte[] getFile(String filename);
 
+    FileEntity selectFileById(int id);
+
 }

@@ -37,12 +37,14 @@
     <select id="queryFileByName" resultType="com.blockChain.entity.FileEntity">
         select * from file_info where filename=#{filename};
     </select>
+    <select id="selectFileById" resultType="com.blockChain.entity.FileEntity">
+        select * from file_info where id=#{id}
+    </select>
 
     <insert id="insertFile">
         insert into file_info(filename,username,filesize,create_time,modify_time) values (#{filename,jdbcType=VARCHAR}
         ,#{username,jdbcType=VARCHAR},#{filesize,jdbcType=VARCHAR} ,
         #{createTime,jdbcType=VARCHAR},#{modifyTime,jdbcType=VARCHAR})
     </insert>
-
 
 </mapper>

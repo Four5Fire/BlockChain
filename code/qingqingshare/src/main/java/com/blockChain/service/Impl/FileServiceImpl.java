@@ -37,12 +37,19 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public FileEntity selectFileById(int id) {
+        return fileDAO.selectFileById(id);
+    }
+
+    @Override
     public void addFile(FileEntity onefile, MultipartFile file) {
-        new Thread(){
-            @Override
-            public void run(){
-                saveInServer(file);
-            }}.start();
+        if (file!=null){
+            new Thread(){
+                @Override
+                public void run(){
+                    saveInServer(file);
+                }}.start();
+        }
         fileDAO.insertFile(onefile);
     }
 
@@ -53,6 +60,7 @@ public class FileServiceImpl implements FileService {
     }
 
     public void saveInServer(MultipartFile file){
+
         //保存在服务器
         String targetFilepath="./"+file.getOriginalFilename();
         try {
