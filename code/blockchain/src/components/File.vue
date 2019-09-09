@@ -319,8 +319,8 @@
           }).then(() => {
             let data = {
               // "username": this.username,
-              "fileId": "43",
-              // "fileId": this.file.id,
+              // "fileId": "43",
+              "fileId": this.file.id,
             };
             console.log(data);
             axios({
@@ -334,15 +334,14 @@
             }).then((res) => {
               console.log(res);
 
-              if (!res) {
-                return
+              if (!res.data) {
+                return;
               }
-              let url = window.URL.createObjectURL(new Blob([res]));
+              let url = window.URL.createObjectURL(new Blob([res.data]));
               let link = document.createElement('a');
               link.style.display = 'none';
               link.href = url;
               link.setAttribute('download', this.file.filename);
-
               document.body.appendChild(link);
               link.click();
             }).catch((err) => {
@@ -507,9 +506,6 @@
     text-align: center;
     color: #606266;
     font-size: 12px;
-  }
-  .el-select{
-    margin: ;
   }
 
 </style>
