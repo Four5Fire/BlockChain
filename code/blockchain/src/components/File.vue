@@ -82,9 +82,8 @@
             placeholder="请输入用户名"
             @select="handleSelect"
           ></el-autocomplete>
-          <el-button slot="append" icon="el-icon-share" type="primary" @click="shareUser"></el-button>
         </div>
-        <div class="share" style="margin-top: 20px;"><el-button type="primary" @click="shareOpen">公开分享</el-button></div>
+        <div class="share" style="margin-top: 20px;"><el-button type="primary" @click="realShare">分享</el-button></div>
       </el-aside>
     </el-container>
   </div>
@@ -374,12 +373,31 @@
           this.realUser=item.value;
         },
 
-        shareOpen(){
-        },
-
-        shareUser(){
+        realShare(){
           if(this.realUser===this.searUser && this.realUser!==''){
+            let data = {
+              "fileId": this.file.id,
+              "names":this.realUser,
+            };
+            this.$axios({
+              method: 'post',
+              url: URL + 'share',
+              data: qs.stringify(data),
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+            }).then((res) => {
+              console.log(res);
+              if (res.data.code === 200) {
+                this.$message.success("已将文件 "+this.file.filename+" 分享给"+this.realUser);
 
+              }else {
+                this.$message.warning(res.data.msg);
+              }
+            }).catch((err) => {
+              console.log(err);
+              this.$message.error(err.toString());
+            })
           }else{
             this.$message.warning('请选择分享对象');
           }
