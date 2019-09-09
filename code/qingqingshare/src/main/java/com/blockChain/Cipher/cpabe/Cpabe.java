@@ -119,7 +119,11 @@ public class Cpabe {
 		prv = SerializeUtils.unserializeBswabePrv(pub, prv_byte);
 
 		BswabeElementBoolean beb = Bswabe.dec(pub, prv, cph);
-		System.err.println("e = " + beb.e.toString());
+		if(beb.e!=null){
+			System.err.println("e = " + beb.e.toString());
+		}else {
+			System.exit(0);
+		}
 		if (beb.b) {
 			plt = AESCoder.decrypt(beb.e.toBytes(), aesBuf);
 			Common.spitFile(decfile, plt);
