@@ -30,8 +30,8 @@
     <select id="selectAllFile" resultType="com.blockChain.entity.FileEntity">
         select * from file_info;
     </select>
-    <select id="getFileById" resultType="com.blockChain.entity.FileEntity">
-        select * from  file_info where id=#{fileId}
+    <select id="getFileById" resultType="java.lang.String">
+        select filename from  file_info where id=#{fileId}
     </select>
 
     <select id="queryFileByName" resultType="com.blockChain.entity.FileEntity">

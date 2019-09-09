@@ -24,7 +24,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin
-@RequestMapping(value = "/file")
+@RequestMapping("/file")
 public class FileController extends BaseController {
     
 
@@ -35,7 +35,7 @@ public class FileController extends BaseController {
     @ResponseBody
     public HashMap getFileByUsername(HttpServletRequest request){
 
-        //获取参数
+        //获取参数de
         String username= ActionUtil.getStrParam(request,"username");
         String purview=ActionUtil.getStrParam(request,"purview");
         List<FileEntity> files=fileService.getFileListByUsername(username,purview);
@@ -62,7 +62,7 @@ public class FileController extends BaseController {
         //获取参数
         String username=ActionUtil.getStrParam(request,"username");
         //fileId参数类型
-        String ids=request.getAuthType();
+        String ids=ActionUtil.getStrParam(request,"fileId");
         String[] fileIds=ids.split(",");
         for (String id : fileIds){
             fileService.delete(username,Integer.parseInt(id));
@@ -73,7 +73,7 @@ public class FileController extends BaseController {
         return modelVO.getResult();
     }
 
-    @RequestMapping(value = "/upload",method = RequestMethod.PUT)
+    @RequestMapping(value = "/upload",method = RequestMethod.POST)
     @ResponseBody
     public HashMap loadFile(HttpServletRequest request){
 
@@ -157,7 +157,9 @@ public class FileController extends BaseController {
         response.reset();
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/octet-stream");
-        //response.setContentLength(fileBytes.length);
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        response.addHeader("Access-Control-Allow-Headers", "Content-Type");
 
         //通过服务器返回文件的位置信息
         try {
@@ -218,5 +220,4 @@ public class FileController extends BaseController {
         modelVO.setData(files);
         return modelVO.getResult();
     }
-
 }

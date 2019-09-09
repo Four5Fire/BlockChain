@@ -28,7 +28,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String getFileName(int fileId) {
-        return fileDAO.getFileById(fileId).getFilename();
+        return fileDAO.getFileById(fileId);
     }
 
     @Override
