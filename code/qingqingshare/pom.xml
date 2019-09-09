@@ -59,6 +59,13 @@
             <version>v1.2.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/clj-http/clj-http -->
+        <dependency>
+            <groupId>clj-http</groupId>
+            <artifactId>clj-http</artifactId>
+            <version>3.7.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
