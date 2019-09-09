@@ -319,7 +319,8 @@
           }).then(() => {
             let data = {
               // "username": this.username,
-              "fileId": this.file.id,
+              "fileId": "43",
+              // "fileId": this.file.id,
             };
             console.log(data);
             axios({
@@ -329,14 +330,21 @@
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
               },
+              responseType: 'blob'
             }).then((res) => {
               console.log(res);
-              if (res.data.code === 200) {
-                this.$message.success('下载成功');
-                this.showBtn = false;
-              } else {
-                this.$message.warning(res.data.msg);
+
+              if (!res) {
+                return
               }
+              let url = window.URL.createObjectURL(new Blob([res]));
+              let link = document.createElement('a');
+              link.style.display = 'none';
+              link.href = url;
+              link.setAttribute('download', this.file.filename);
+
+              document.body.appendChild(link);
+              link.click();
             }).catch((err) => {
               console.log(err);
               this.$message.error(err.toString());
