@@ -213,6 +213,8 @@
               console.log(res);
               if (res.data.code === 200) {
                 this.$message.success("上传成功");
+                this.sel2=false;
+                this.sel1=true;
               } else {
                 this.$message.warning(res.data.msg);
               }
