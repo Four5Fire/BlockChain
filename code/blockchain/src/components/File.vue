@@ -92,9 +92,9 @@
 
 <script>
   import Nav from '../components/Nav';
-  import * as axios from 'axios';
   import qs from 'qs';
   const URL='http://playcall.cn:8687/qingqingshare/file/';
+
     export default {
       name: "file",
       components:{Nav},
@@ -121,37 +121,7 @@
           users: [],
           timeout:  null,
 
-          files:[{
-            id:"1",
-            filename:"test.txt",
-            filesize:"13.2MB",
-            uploadTime:"2019-04-28",
-            shareState:1//0为不共享，1为共享
-          },{
-            id:"2",
-            filename:"test.txt",
-            filesize:"13.2MB",
-            uploadTime:"2019-04-28",
-            shareState:0//0为不共享，1为共享
-          },{
-            id:"3",
-            filename:"test.txt",
-            filesize:"13.2MB",
-            uploadTime:"2019-04-28",
-            shareState:1//0为不共享，1为共享
-          },{
-            id:"4",
-            fileName:"test.txt",
-            fileSize:"13.2MB",
-            uploadTime:"2019-04-28",
-            shareState:0//0为不共享，1为共享
-          },{
-            id:"5",
-            fileName:"test.txt",
-            fileSize:"13.2MB",
-            uploadTime:"2019-04-28",
-            shareState:0//0为不共享，1为共享
-          },],
+          files:[],
         }
       },
       mounted() {
@@ -164,7 +134,7 @@
           let data =  {
             "keyword": this.keyword,
           };
-          axios({
+          this.$axios({
             method: 'post',
             url: URL + 'query',
             data:qs.stringify(data),
@@ -209,7 +179,7 @@
             fd.append('file', file);
             fd.append('shareState', this.shareState);
             fd.append('tags', this.tags);
-            axios.post(url, fd).then((res) => {
+            this.$axios.post(url, fd).then((res) => {
               console.log(res);
               if (res.data.code === 200) {
                 this.$message.success("上传成功");
@@ -242,12 +212,11 @@
             this.titlesrc="../../static/search.png";
             this.showShare=false;
           }
-          // return ;
           let data = {
             "username": this.username,
             "purview": param,
           };
-          axios({
+          this.$axios({
             method: 'post',
             url: URL + 'showfile',
             data: qs.stringify(data),
@@ -255,15 +224,16 @@
               'Content-Type':'application/x-www-form-urlencoded'
             },
           }).then((res) => {
+            console.log('res');
             console.log(res);
             if (res.data.code === 200) {
               this.files = res.data.data;
             } else {
               this.$message.warning(res.data.msg);
             }
-          }).catch((err)=>{
-            console.log(err);
-            this.$message.error(err.toString());
+          }).catch((error)=>{
+            console.log(error);
+            this.$message.error(error.toString());
           });
         },
 
@@ -288,7 +258,7 @@
                 "username": this.username,
                 "fileId": this.file.id,
               };
-            axios({
+            this.$axios({
               method: 'post',
               url: URL + 'delete',
               data:qs.stringify(data),
@@ -318,12 +288,10 @@
             cancelButtonText: '取消',
           }).then(() => {
             let data = {
-              // "username": this.username,
-              // "fileId": "43",
               "fileId": this.file.id,
             };
             console.log(data);
-            axios({
+            this.$axios({
               method: 'post',
               url: URL + 'download',
               data: qs.stringify(data),
@@ -362,7 +330,7 @@
             "username": '',
             only:false,
           };
-          axios({
+          this.$axios({
             method: 'post',
             url: 'http://playcall.cn:8687/qingqingshare/user/query',
             data: qs.stringify(data),
