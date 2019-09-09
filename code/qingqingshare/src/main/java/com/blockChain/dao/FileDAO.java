@@ -18,7 +18,7 @@ public interface FileDAO {
 
     void deleteOneFile(String name,int fileId);
 
-    FileEntity getFileById(int fileId);
+    String getFileById(int fileId);
 
     FileEntity queryFileByName(String filename);
 }

@@ -157,7 +157,9 @@ public class FileController extends BaseController {
         response.reset();
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/octet-stream");
-        //response.setContentLength(fileBytes.length);
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        response.addHeader("Access-Control-Allow-Headers", "Content-Type");
 
         //通过服务器返回文件的位置信息
         try {
