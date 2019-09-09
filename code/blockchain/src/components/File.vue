@@ -204,7 +204,7 @@
             this.$message.error('请先选择上传状态');
           }else {
             let fd = new FormData();
-            let url = URL + 'uploFad';
+            let url = URL + 'upload';
             fd.append('username', this.username);
             fd.append('file', file);
             fd.append('shareState', this.shareState);
@@ -224,7 +224,6 @@
         },
 
         loadFile(param){
-          console.log(param);
           this.showBtn=false;
           if(param==='own'){
             this.sel1=true;
@@ -242,7 +241,7 @@
           }
           // return ;
           let data = {
-            "username": this.name,
+            "username": this.username,
             "purview": param,
           };
           axios({
@@ -256,7 +255,6 @@
             console.log(res);
             if (res.data.code === 200) {
               this.files = res.data.data;
-              console.log(this.files);
             } else {
               this.$message.warning(res.data.msg);
             }
@@ -268,11 +266,12 @@
 
         funcfile(param) {
           this.file=param;
-          if (this.sel1 && param.shareState===1) {
-              this.showBtn = true;
-              this.showShare=false;
-
-          } else if(this.sel3) {
+          if (this.sel1) {
+            this.showBtn = true;
+            if (param.shareState === 1) {
+              this.showShare = false;
+            }
+          }else if(this.sel3) {
             this.download();
           }
         },
@@ -282,11 +281,9 @@
             confirmButtonText: '确定',
             cancelButtonText: '取消',
           }).then(() => {
-            let fileId=[];
-            fileId[0]=this.file.id;
             let   data= {
                 "username": this.username,
-                "fileId": fileId,
+                "fileId": this.file.id,
               };
             axios({
               method: 'post',
@@ -300,8 +297,7 @@
               if (res.data.code === 200) {
                 this.$message.success('删除成功');
                 this.showBtn = false;
-                this.sel1 = false;
-                this.sel1 = true;
+                this.loadFile('own');
               } else {
                 this.$message.warning(res.data.msg);
               }
@@ -319,7 +315,7 @@
             cancelButtonText: '取消',
           }).then(() => {
             let data = {
-              "username": this.username,
+              // "username": this.username,
               "fileId": this.file.id,
             };
             console.log(data);
