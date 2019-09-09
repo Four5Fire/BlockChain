@@ -204,7 +204,7 @@
             this.$message.error('请先选择上传状态');
           }else {
             let fd = new FormData();
-            let url = URL + 'upload';
+            let url = URL + 'uploFad';
             fd.append('username', this.username);
             fd.append('file', file);
             fd.append('shareState', this.shareState);
@@ -240,7 +240,7 @@
             this.titlesrc="../../static/search.png";
             this.showShare=false;
           }
-          return ;
+          // return ;
           let data = {
             "username": this.name,
             "purview": param,
