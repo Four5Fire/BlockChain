@@ -5,14 +5,3 @@ password:asdfghjkl@123
 
 
 
-以太坊账户
-address_1:{2600a636c9b40da1bd4dcb7317dd4f790ecf4c14}
-   -p:942558046
-address_2:{a40b922f42ee32a313c6b90ad2443a0ba660b0ee}
-   -p:1126663073
-address_3:{e48687a66607fbed30f2e529182541ad87cf8f07}
-   -p:1095833846
-address_4:{ccdbb45af3de0949dcc029aed9c84d3db88a4eb7}
-   -p:1036902821
-address_5:{a3494ff109db9bb43c52fd7e413829230fad440f}
-   -p:1335850578

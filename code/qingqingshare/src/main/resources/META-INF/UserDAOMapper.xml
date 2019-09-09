@@ -44,4 +44,7 @@
             </if>
         </where>
     </select>
+    <select id="selectUsers" resultMap="userEntityMap">
+        select * from user_info;
+    </select>
 </mapper>
