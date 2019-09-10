@@ -1,5 +1,6 @@
 package com.blockChain.interceptor;
 
+import com.blockChain.entity.ModelVO;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,6 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Object user=request.getSession().getAttribute("loginUser");
-        System.out.println(user);
         //未登录，则拦截请求，返回状态码为408
         if(user==null){
             response.setStatus(408);

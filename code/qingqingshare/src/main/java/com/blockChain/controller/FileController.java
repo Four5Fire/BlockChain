@@ -6,7 +6,6 @@ import com.blockChain.entity.ModelVO;
 import com.blockChain.service.FileService;
 import com.blockChain.util.ActionUtil;
 import com.blockChain.util.MapUtils;
-import com.blockChain.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -126,9 +125,10 @@ public class FileController extends BaseController {
     @RequestMapping(value = "/share",method = RequestMethod.POST)
     @ResponseBody
     public HashMap shareFile(HttpServletRequest request){
+        ModelVO modelVO=new ModelVO();
         //获取参数
         String fileId=ActionUtil.getStrParam(request,"fileId");
-        String[] names=ActionUtil.getStrParam(request,"names").split(",");
+        String name=ActionUtil.getStrParam(request,"names");
 
         //获取文件对象
         FileEntity fileEntity=fileService.selectFileById(Integer.parseInt(fileId));
@@ -137,9 +137,14 @@ public class FileController extends BaseController {
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date=new Date();
         String now=simpleDateFormat.format(date);
-        //向数据库中进行批量的插入操作
-        FileEntity one=new FileEntity();
-        for (String name :names){
+
+        //判断该文件是否已经分向给该用户(filename,name)
+        if(fileService.selectFile(name,fileEntity.getFilename())){
+            modelVO.setMsg("该用户之前已分享过该文件");
+        }
+        else{
+            //分享文件
+            FileEntity one=new FileEntity();
             one.setShareState(fileEntity.getShareState());
             one.setUsername(name);
             one.setFilesize(fileEntity.getFilesize());
@@ -148,16 +153,14 @@ public class FileController extends BaseController {
             one.setCreateTime(now);
             one.setModifyTime(now);
             fileService.addFile(one,null);
+            modelVO.setMsg("文件共享成功");
         }
         //向前端进行展示
-        ModelVO modelVO=new ModelVO();
         modelVO.setCode(200);
-        modelVO.setMsg("文件共享成功");
         return modelVO.getResult();
     }
 
     @RequestMapping(value = "/download" ,method = RequestMethod.POST)
-    @ResponseBody
     public void downloadFile(HttpServletRequest request,HttpServletResponse response) {
 
         ModelVO modelVO=new ModelVO();
@@ -170,7 +173,7 @@ public class FileController extends BaseController {
         File file=new File(filepath);
 
         //从ipfs获取文件
-       // byte[] fileBytes= fileService.getFile(filename);
+       byte[] fileBytes= fileService.getFile(filename);
        //设置response
         response.reset();
         response.setCharacterEncoding("utf-8");
@@ -180,7 +183,7 @@ public class FileController extends BaseController {
         response.addHeader("Access-Control-Allow-Headers", "Content-Type");
 
         //通过服务器返回文件的位置信息
-        try {
+        /*try {
             response.setHeader("Content-Disposition", "attachment;fileName=" +
                     new String(filename.getBytes("utf-8"),"ISO-8859-1"));
             byte[] buffer=new byte[1024];
@@ -200,14 +203,14 @@ public class FileController extends BaseController {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }*/
+        try {
+            OutputStream outputStream=response.getOutputStream();
+            outputStream.write(fileBytes);
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-//        try {
-//            OutputStream outputStream=response.getOutputStream();
-//            outputStream.write(fileBytes);
-//            outputStream.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @RequestMapping(value = "/query" ,method = RequestMethod.POST)
