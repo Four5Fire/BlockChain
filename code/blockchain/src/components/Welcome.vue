@@ -139,12 +139,12 @@
         const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
         if (this.name === '' || this.name.length < 4 || this.name.length > 10) {
           this.$message.warning('请输入长度为4-10的用户名');
-        } else if (this.mail === '' || !reg.test(this.mail)) {
-          this.$message.warning('请输入正确格式的邮箱');
         } else if (this.pswd === '' || this.pswd.length < 8 || this.pswd.length > 16) {
           this.$message.warning('请输入长度为8-16的密码');
         } else if (this.pswd !== this.pswd2) {
           this.$message.warning('两次输入密码不一致');
+        } else if (this.mail === '' || !reg.test(this.mail)) {
+          this.$message.warning('请输入正确格式的邮箱');
         } else if (this.sex === '') {
           this.$message.warning('请选择性别');
         } else if (this.grade === '') {
