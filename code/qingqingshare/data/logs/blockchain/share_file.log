@@ -1,0 +1,39 @@
+2019-09-08 16:52:33.636 INFO [main]com.blockChain.ManageApplication.logStarting:50 -Starting ManageApplication on MacBook-Pro-caojy.local with PID 69881 (/Users/caojunyi/Documents/GitHub/BlockChain/code/qingqingshare/target/classes started by caojunyi in /Users/caojunyi/Documents/GitHub/BlockChain/code/qingqingshare)
+2019-09-08 16:52:33.802 INFO [main]com.blockChain.ManageApplication.logStartupProfileInfo:675 -No active profile set, falling back to default profiles: default
+2019-09-08 16:52:35.121 INFO [main]o.s.context.annotation.ConfigurationClassPostProcessor.enhanceConfigurationClasses:380 -Cannot enhance @Configuration bean definition 'mapperScannerConfig' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2019-09-08 16:52:35.786 INFO [main]o.s.boot.web.embedded.tomcat.TomcatWebServer.initialize:90 -Tomcat initialized with port(s): 8687 (http)
+2019-09-08 16:52:35.803 INFO [main]org.apache.coyote.http11.Http11NioProtocol.log:173 -Initializing ProtocolHandler ["http-nio-8687"]
+2019-09-08 16:52:35.816 INFO [main]org.apache.catalina.core.StandardService.log:173 -Starting service [Tomcat]
+2019-09-08 16:52:35.816 INFO [main]org.apache.catalina.core.StandardEngine.log:173 -Starting Servlet Engine: Apache Tomcat/9.0.13
+2019-09-08 16:52:35.823 INFO [main]org.apache.catalina.core.AprLifecycleListener.log:173 -The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/caojunyi/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2019-09-08 16:52:35.921 INFO [main]o.a.c.c.C.[Tomcat].[localhost].[/qingqingshare].log:173 -Initializing Spring embedded WebApplicationContext
+2019-09-08 16:52:35.921 INFO [main]org.springframework.web.context.ContextLoader.prepareWebApplicationContext:296 -Root WebApplicationContext: initialization completed in 2019 ms
+2019-09-08 16:52:36.682 INFO [main]o.s.scheduling.concurrent.ThreadPoolTaskExecutor.initialize:171 -Initializing ExecutorService 'applicationTaskExecutor'
+2019-09-08 16:52:37.061 INFO [main]org.apache.coyote.http11.Http11NioProtocol.log:173 -Starting ProtocolHandler ["http-nio-8687"]
+2019-09-08 16:52:37.089 INFO [main]org.apache.tomcat.util.net.NioSelectorPool.log:173 -Using a shared selector for servlet write/read
+2019-09-08 16:52:37.104 INFO [main]o.s.boot.web.embedded.tomcat.TomcatWebServer.start:204 -Tomcat started on port(s): 8687 (http) with context path '/qingqingshare'
+2019-09-08 16:52:37.108 INFO [main]com.blockChain.ManageApplication.logStarted:59 -Started ManageApplication in 4.248 seconds (JVM running for 6.406)
+2019-09-08 16:52:47.393 INFO [http-nio-8687-exec-2]o.a.c.c.C.[Tomcat].[localhost].[/qingqingshare].log:173 -Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-09-08 16:52:47.394 INFO [http-nio-8687-exec-2]org.springframework.web.servlet.DispatcherServlet.initServletBean:524 -Initializing Servlet 'dispatcherServlet'
+2019-09-08 16:52:47.411 INFO [http-nio-8687-exec-2]org.springframework.web.servlet.DispatcherServlet.initServletBean:546 -Completed initialization in 17 ms
+2019-09-08 16:52:48.449 INFO [http-nio-8687-exec-2]com.blockChain.controller.UserController.login:105 -岑岑哥哥是小da小猪:该用户未注册
+2019-09-08 16:53:18.848 INFO [main]com.blockChain.ManageApplication.logStarting:50 -Starting ManageApplication on MacBook-Pro-caojy.local with PID 69935 (/Users/caojunyi/Documents/GitHub/BlockChain/code/qingqingshare/target/classes started by caojunyi in /Users/caojunyi/Documents/GitHub/BlockChain/code/qingqingshare)
+2019-09-08 16:53:18.884 INFO [main]com.blockChain.ManageApplication.logStartupProfileInfo:675 -No active profile set, falling back to default profiles: default
+2019-09-08 16:53:20.109 INFO [main]o.s.context.annotation.ConfigurationClassPostProcessor.enhanceConfigurationClasses:380 -Cannot enhance @Configuration bean definition 'mapperScannerConfig' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2019-09-08 16:53:20.914 INFO [main]o.s.boot.web.embedded.tomcat.TomcatWebServer.initialize:90 -Tomcat initialized with port(s): 8687 (http)
+2019-09-08 16:53:20.934 INFO [main]org.apache.coyote.http11.Http11NioProtocol.log:173 -Initializing ProtocolHandler ["http-nio-8687"]
+2019-09-08 16:53:20.952 INFO [main]org.apache.catalina.core.StandardService.log:173 -Starting service [Tomcat]
+2019-09-08 16:53:20.953 INFO [main]org.apache.catalina.core.StandardEngine.log:173 -Starting Servlet Engine: Apache Tomcat/9.0.13
+2019-09-08 16:53:21.001 INFO [main]org.apache.catalina.core.AprLifecycleListener.log:173 -The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/caojunyi/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2019-09-08 16:53:21.277 INFO [main]o.a.c.c.C.[Tomcat].[localhost].[/qingqingshare].log:173 -Initializing Spring embedded WebApplicationContext
+2019-09-08 16:53:21.278 INFO [main]org.springframework.web.context.ContextLoader.prepareWebApplicationContext:296 -Root WebApplicationContext: initialization completed in 2248 ms
+2019-09-08 16:53:22.312 INFO [main]o.s.scheduling.concurrent.ThreadPoolTaskExecutor.initialize:171 -Initializing ExecutorService 'applicationTaskExecutor'
+2019-09-08 16:53:22.694 INFO [main]org.apache.coyote.http11.Http11NioProtocol.log:173 -Starting ProtocolHandler ["http-nio-8687"]
+2019-09-08 16:53:22.724 INFO [main]org.apache.tomcat.util.net.NioSelectorPool.log:173 -Using a shared selector for servlet write/read
+2019-09-08 16:53:22.747 INFO [main]o.s.boot.web.embedded.tomcat.TomcatWebServer.start:204 -Tomcat started on port(s): 8687 (http) with context path '/qingqingshare'
+2019-09-08 16:53:22.753 INFO [main]com.blockChain.ManageApplication.logStarted:59 -Started ManageApplication in 4.673 seconds (JVM running for 7.795)
+2019-09-08 16:53:26.531 INFO [http-nio-8687-exec-2]o.a.c.c.C.[Tomcat].[localhost].[/qingqingshare].log:173 -Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-09-08 16:53:26.533 INFO [http-nio-8687-exec-2]org.springframework.web.servlet.DispatcherServlet.initServletBean:524 -Initializing Servlet 'dispatcherServlet'
+2019-09-08 16:53:26.548 INFO [http-nio-8687-exec-2]org.springframework.web.servlet.DispatcherServlet.initServletBean:546 -Completed initialization in 15 ms
+2019-09-08 16:53:45.453 INFO [http-nio-8687-exec-2]com.blockChain.controller.UserController.login:105 -岑岑哥哥是小da小猪:该用户未注册
+2019-09-08 16:53:45.510 INFO [Thread-19]o.s.scheduling.concurrent.ThreadPoolTaskExecutor.shutdown:208 -Shutting down ExecutorService 'applicationTaskExecutor'
