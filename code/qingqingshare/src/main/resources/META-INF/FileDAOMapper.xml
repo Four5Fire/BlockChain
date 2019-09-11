@@ -28,7 +28,7 @@
     </select>
 
     <select id="selectAllFile" resultType="com.blockChain.entity.FileEntity">
-        select * from file_info;
+        select * from file_info where share_state=1;
     </select>
     <select id="getFileById" resultType="java.lang.String">
         select filename from  file_info where id=#{fileId}
@@ -42,9 +42,10 @@
     </select>
 
     <insert id="insertFile">
-        insert into file_info(filename,username,filesize,create_time,modify_time) values (#{filename,jdbcType=VARCHAR}
+        insert into file_info(filename,username,filesize,create_time,modify_time,share_state) values (#{filename,jdbcType=VARCHAR}
         ,#{username,jdbcType=VARCHAR},#{filesize,jdbcType=VARCHAR} ,
-        #{createTime,jdbcType=VARCHAR},#{modifyTime,jdbcType=VARCHAR})
+        #{createTime,jdbcType=VARCHAR},#{modifyTime,jdbcType=VARCHAR},
+        #{shareState})
     </insert>
 
 </mapper>

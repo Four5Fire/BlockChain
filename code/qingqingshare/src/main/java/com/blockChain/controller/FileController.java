@@ -33,13 +33,13 @@ public class FileController extends BaseController {
     @RequestMapping(value = "/showfile",method = RequestMethod.POST)
     @ResponseBody
     public HashMap getFileByUsername(HttpServletRequest request){
-
-        //获取参数de
+        //获取参数
         String username= ActionUtil.getStrParam(request,"username");
         String purview=ActionUtil.getStrParam(request,"purview");
         List<FileEntity> files=fileService.getFileListByUsername(username,purview);
         List<FileVO> fileOvs=new LinkedList<>();
         for(FileEntity fileEntity:files){
+
             FileVO one =new FileVO();
             one.setId(fileEntity.getId());
             one.setFilename(fileEntity.getFilename());
@@ -97,6 +97,7 @@ public class FileController extends BaseController {
             modelVO.setCode(400);
             return modelVO.getResult();
         }
+
         //存储文件标签
         String[] tags=ActionUtil.getStrParam(request,"tags").split(",");
         for (String tag:tags){
@@ -116,6 +117,7 @@ public class FileController extends BaseController {
         oneFile.setModifyTime(now);
         oneFile.setUsername(username);
         oneFile.setShareState(shareState);
+
         fileService.addFile(oneFile,file);
         modelVO.setMsg("文件上传成功");
 
