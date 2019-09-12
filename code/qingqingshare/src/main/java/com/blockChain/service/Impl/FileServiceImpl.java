@@ -8,6 +8,7 @@ import com.blockChain.util.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.web3j.crypto.CipherException;
 
 import java.io.*;
 import java.util.List;
@@ -59,7 +60,7 @@ public class FileServiceImpl implements FileService {
         return fileDAO.queryFileByName(filename);
     }
 
-    public void saveInServer(MultipartFile file){
+    public void saveInServer(MultipartFile file) throws IOException, CipherException {
 
         //保存在服务器
         String targetFilepath="./"+file.getOriginalFilename();
@@ -78,19 +79,23 @@ public class FileServiceImpl implements FileService {
         String hash= IPFSUtils.addFile(targetFilepath);
         MapUtils.filenameHash.put(file.getOriginalFilename(),hash);
         deleteFile(targetFilepath);
+        MapUtils.storeHashMapStr();
     }
 
-    public boolean selectFile(String username,String filename){
+    @Override
+    public boolean selectFile(String username, String filename){
         if(fileDAO.selectFileByUserAndFilename(username,filename)==null)
             return false;
         return true;
     }
 
+    @Override
     public void deleteFile(String filepath){
         File file=new File(filepath);
         if(file.exists()) file.delete();
     }
 
+    @Override
     public byte[] getFile(String filename){
         String hashkey=MapUtils.filenameHash.get(filename);
         if(hashkey==null){
